@@ -1,0 +1,5 @@
+False False False False False False False False False False False False False False 
+False
+False
+False
+Для передвижения нажимайте на клавиши "A" и "D", либо же на стрелки влево и вправо

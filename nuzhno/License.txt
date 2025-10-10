@@ -1,0 +1,9 @@
+Oyuun License
+
+CustomerCode=test
+
+ProductCode=L2VPN
+
+LicenseNumber=3904200343
+
+LicenseCode=42000-0000P-W3TZT-7QBAF-F789B
