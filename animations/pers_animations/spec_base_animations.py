@@ -9,8 +9,11 @@ import arcade
 class GonecAnimations(pers_animations.BaseAnimations):
     def __init__(self, sprite: simples.SimpleSprite):
         super().__init__(sprite)
-        main_patch = 'resources/Pers_animations/base/male_person/malePerson_'
+        main_patch = f'{self.main_patch}male_person/malePerson_'
         self.idle_texture = arcade.load_texture_pair(f'{main_patch}idle.png')
+        self.slovar_animation[IDLE][3].load_textures(6, f"{self.main_patch}Gonec/idle/", PNG)
+        self.slovar_animation[IDLE][1] = 5
+        self.slovar_animation[IDLE][2] = 0.05
 
         self.slovar_animation[WALK][3].load_textures(8, f'{main_patch}walk', PNG)
         self.slovar_animation[WALK][1] = 7
@@ -54,10 +57,10 @@ class BratislavAnimations(pers_animations.BaseAnimations):
         self.slovar_animation[IDLE][2] = 0.05
 
         self.dialog_textures.load_textures(3, f'{main_patch}dialog', PNG)
-        self.slovar_animation[WALK][3].load_textures(8, f'{main_patch}walk', PNG)
+        self.slovar_animation[WALK][3].load_textures(8, f"{self.main_patch}Adnot/walk/", PNG)
 
         self.slovar_animation[WALK][1] = 7
-        self.slovar_animation[WALK][2] = 0.2
+        self.slovar_animation[WALK][2] = 0.14
 
         self.chest_texture = arcade.load_texture_pair(f'{main_patch}jump.png')
 
