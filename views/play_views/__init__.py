@@ -210,7 +210,7 @@ class LevelView(arcade.View):
             if vrag not in self.zhivie_vrag_list:
                 self.zhivie_vrag_list.append(vrag)
             for drug in self.vrag_list:
-                if vrag != drug:
+                if drug not in vrag.drug_list:
                     vrag.append_drug(drug)
 
         self.igrok.sprite_list = self.vrag_list

@@ -58,10 +58,10 @@ class MyWindow(arcade.Window):
         self.glava_2_view = None
         self.glava_3_view = None
 
-        self.pause_view = menu_views.PauseViev(self.prolog_view, self.FIELDNAMES_POSITION, self.FIELDNAMES_BOSS)
-        self.main_menu_view = menu_views.MainMenuViev(self.prolog_view)
+        # self.pause_view = menu_views.PauseViev(self.prolog_view, self.FIELDNAMES_POSITION, self.FIELDNAMES_BOSS)
+        # self.main_menu_view = menu_views.MainMenuViev(self.prolog_view)
         # self.show_view(self.main_menu_view)
-        # self.glava_1_view.setup()
+        self.glava_1_view.setup()
 
     def on_update(self, delta_time: float):
         # if self.main_menu_view.show:

@@ -7,10 +7,11 @@ import open_files
 import instruments
 from interaction_sprites import simples
 from interaction_sprites.simples import individ_simples
-from interaction_sprites.battles.mobs import vrags
+from interaction_sprites.battles.mobs.vrags import aarons, other
 import views.play_views
 from views.play_views import IGROK_MOVE_GROUND, FRICTION_IGROK, IG_MAX_HORIZANTAL_SPEED, IG_MAX_VERTICAL_SPEED, \
     MASS_IGROK, HOD_SPEED
+
 
 BACKGROUND_COLOR = (254, 192, 81, 255)
 
@@ -32,7 +33,7 @@ class GlavaFirstView(views.play_views.LevelView):
         self.interaction_list.append(individ_simples.RinTeo())
         self.bratislav = individ_simples.AdnotBratislav()
 
-        self.vrag_napad = vrags.First(self.igrok, "First", self.walls_list)
+        self.vrag_napad = other.First(self.igrok, "First", self.walls_list)
         self.spec_object = []
 
         self.kast_scena = False
@@ -50,6 +51,14 @@ class GlavaFirstView(views.play_views.LevelView):
 
         self.vibor_sposob = None
         self.vibor_sposob: my_gui.ui.ViborSosob
+
+        self.wave_slovar_list = []
+        wave1_slovar = {
+            aarons.G2: (1, NACH_X + 11000, NACH_X + 11002, 160, True),
+            aarons.PMdd: (1, NACH_X + 11250, NACH_X + 11252, 160, True),
+            aarons.G1: (3, NACH_X + 11300, NACH_X + 11602, 160, True)
+        }
+        self.wave_slovar_list.append(wave1_slovar)
 
     def setup(self):
         self.update_igrok_pos((NACH_X, 163))
@@ -119,7 +128,7 @@ class GlavaFirstView(views.play_views.LevelView):
         self.sprite_list_draw()
         # self.drug_list.draw()
         # self.drug_list.update_animation()
-        self.igrok.draw(pixelated=True)
+        self.igrok.draw()
         if self.s_kast_scena == 1 and self.dialog.dialog:
             self.igrok.animations.idle_animation(0)
         elif self.s_kast_scena == 3:
@@ -279,7 +288,7 @@ class GlavaFirstView(views.play_views.LevelView):
                     i -= 1
                 self.background_list.clear()
 
-                self.wave(5, vrags.Balvanchik, NACH_X + 11000, NACH_X + 12000, 160)
+                self.waves(self.wave_slovar_list[0])
 
             if symbol == arcade.key.K:
                 self.kamera.zoom = 2
@@ -624,7 +633,7 @@ class GlavaFirstView(views.play_views.LevelView):
 
                 self.dialog.update(3)
 
-    def kast_scena_3(self, ):
+    def kast_scena_3(self):
         if self.s_kast_scena == 3 and self.list_kast_scen[2]:
             if self.igrok.techenie.action:
                 self.igrok.techenie.action = False
@@ -769,7 +778,7 @@ class GlavaFirstView(views.play_views.LevelView):
                                                       [self.kast_scena, self.s_kast_scena])
                                 open_files.write_file(r'files/states.txt', [self.fight])
 
-                            self.wave(5, vrags.Balvanchik, NACH_X + 11000, NACH_X + 12000, 160)
+                            self.waves(self.wave_slovar_list[0])
                     else:
                         if not self.igrok.toggle:
                             self.fizika.set_friction(self.igrok, 1)
@@ -829,18 +838,24 @@ class GlavaFirstView(views.play_views.LevelView):
         else:
             return ekran_center_x, ekran_center_y
 
-    def wave(self, kol_vo, personazh, start, end, const, xy=True):
+    def wave(self, personazh, kol_vo, start, end, const, xy=True):
         prom = abs(abs(start) - abs(end)) // kol_vo
         for i in range(start, end, prom):
             if xy:
-                vrag = personazh(self.igrok, f"Balvan{i}", self.walls_list)
+                vrag = personazh(self.igrok, self.walls_list)
                 vrag.position = i, const
                 self.vrag_list.append(vrag)
             else:
-                vrag = personazh(self.igrok, f"Balvan{i}", self.walls_list)
+                vrag = personazh(self.igrok, self.walls_list)
                 vrag.position = const, i
                 self.vrag_list.append(vrag)
 
         self.filling_vrag_lists()
         print(len(self.zhivie_vrag_list))
+
+    def waves(self, slovar: dict):
+        for key in slovar:
+            self.wave(key, *slovar[key])
+
+
 

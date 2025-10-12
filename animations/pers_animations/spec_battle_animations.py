@@ -1,7 +1,8 @@
 import instruments
 from instruments import PNG
 from interaction_sprites import battles
-from interaction_sprites.battles import mobs, BattlePers
+from interaction_sprites.battles import BattlePers
+from interaction_sprites.battles.mobs import vrags
 from animations.pers_animations import WALK, IDLE, BEG, SBIV
 from animations import pers_animations
 import arcade
@@ -113,7 +114,7 @@ class BetaOyuunAnimations(pers_animations.BattleAnimations):
 
 
 class BalvanchikAnimations(pers_animations.BattleAnimations):
-    def __init__(self, pers: mobs.Vrag):
+    def __init__(self, pers: vrags.Vrag):
         super().__init__(pers)
         main_patch = self.main_patch + 'male_adventurer/maleAdventurer_'
 

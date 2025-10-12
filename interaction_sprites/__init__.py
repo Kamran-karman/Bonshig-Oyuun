@@ -9,6 +9,9 @@ class InteractionSprite(arcade.Sprite):
 
         self.animations = None
 
+    def draw(self, *, filter=None, pixelated=True, blend_function=None) -> None:
+        super().draw(filter=filter, pixelated=pixelated, blend_function=blend_function)
+
 
 class DvizhInteractionSprite(InteractionSprite):
     def __init__(self):
