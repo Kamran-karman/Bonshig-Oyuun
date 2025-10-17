@@ -1,0 +1,151 @@
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+deleted file mode 100644
+--- a/.idea/misc.xml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,7 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="Black">
+-    <option name="sdkName" value="Python 3.10 (PythonProject)" />
+-  </component>
+-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.10 virtualenv at C:\Users\user\Desktop\Bonhsig-Oyuun\Igra\.venv" project-jdk-type="Python SDK" />
+-</project>
+\ No newline at end of file
+Index: .idea/modules.xml
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+deleted file mode 100644
+--- a/.idea/modules.xml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="ProjectModuleManager">
+-    <modules>
+-      <module fileurl="file://$PROJECT_DIR$/.idea/PythonProject.iml" filepath="$PROJECT_DIR$/.idea/PythonProject.iml" />
+-    </modules>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/.gitignore
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+deleted file mode 100644
+--- a/.idea/.gitignore	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,3 +0,0 @@
+-# Default ignored files
+-/shelf/
+-/workspace.xml
+Index: .idea/.name
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.name b/.idea/.name
+deleted file mode 100644
+--- a/.idea/.name	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,1 +0,0 @@
+-ispit.py
+\ No newline at end of file
+Index: .idea/codeStyles/codeStyleConfig.xml
+===================================================================
+diff --git a/.idea/codeStyles/codeStyleConfig.xml b/.idea/codeStyles/codeStyleConfig.xml
+deleted file mode 100644
+--- a/.idea/codeStyles/codeStyleConfig.xml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,5 +0,0 @@
+-<component name="ProjectCodeStyleConfiguration">
+-  <state>
+-    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
+-  </state>
+-</component>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/Project_Default.xml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,19 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <profile version="1.0">
+-    <option name="myName" value="Project Default" />
+-    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+-      <option name="ignoredNames">
+-        <list>
+-          <option value="format" />
+-        </list>
+-      </option>
+-    </inspection_tool>
+-    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+-      <option name="ignoredIdentifiers">
+-        <list>
+-          <option value="interaction_sprites.DvizhInteractionSprite.is_on_ground" />
+-        </list>
+-      </option>
+-    </inspection_tool>
+-  </profile>
+-</component>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/profiles_settings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/profiles_settings.xml b/.idea/inspectionProfiles/profiles_settings.xml
+deleted file mode 100644
+--- a/.idea/inspectionProfiles/profiles_settings.xml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,6 +0,0 @@
+-<component name="InspectionProjectProfileManager">
+-  <settings>
+-    <option name="USE_PROJECT_PROFILE" value="false" />
+-    <version value="1.0" />
+-  </settings>
+-</component>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+deleted file mode 100644
+--- a/.idea/vcs.xml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="VcsDirectoryMappings">
+-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/PythonProject.iml
+===================================================================
+diff --git a/.idea/PythonProject.iml b/.idea/PythonProject.iml
+deleted file mode 100644
+--- a/.idea/PythonProject.iml	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
++++ /dev/null	(revision 62557e975dab5b03a1f9c7228999a4acb3ec38ae)
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<module type="PYTHON_MODULE" version="4">
+-  <component name="NewModuleRootManager">
+-    <content url="file://$MODULE_DIR$">
+-      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+-    </content>
+-    <orderEntry type="jdk" jdkName="Python 3.10 virtualenv at C:\Users\user\Desktop\Bonhsig-Oyuun\Igra\.venv" jdkType="Python SDK" />
+-    <orderEntry type="sourceFolder" forTests="false" />
+-  </component>
+-</module>
+\ No newline at end of file
