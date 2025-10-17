@@ -1,5 +1,5 @@
-True True True True False False False False False False False False False 
+False False False False False False False False False False False False False 
 False
 False
 False
-Нажмите на ПРОБЕЛ для нанесения обычных ударов
+Для передвижения нажимайте на клавиши "A" и "D", либо же на стрелки влево и вправо

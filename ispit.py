@@ -6,7 +6,7 @@ import arcade.gui
 import instruments
 from my_gui import circles, ui
 from interaction_sprites.battles import igrok
-from interaction_sprites.battles.mobs import vrags
+from interaction_sprites.battles.mobs.vrags import aarons
 from my_gui import line
 import sposobs
 import pymunk
@@ -61,8 +61,7 @@ class BetaViev(arcade.View):
         self.line_mana = None
         self.line_stamina = None
         self.line_v = None
-
-        self.circles = circles.Circles(50)
+        self.circles = circles.Circles(72)
 
         self.s = 0
         self.s1 = 0
@@ -89,7 +88,7 @@ class BetaViev(arcade.View):
 
     def setup(self):
         self.kamera = arcade.Camera()
-        self.kamera.zoom = 1.1
+        self.kamera.zoom = 1.2
 
         self.smert_list1 = arcade.SpriteList()
         self.smert_list2 = arcade.SpriteList()
@@ -168,8 +167,15 @@ class BetaViev(arcade.View):
 
         circles_texture = instruments.TextureList()
         circles_texture.load_textures(5, 'resources/sposob', instruments.PNG, False)
-        self.circles.create_circles(self.igrok.five_sposobs, self.window.width * 0.2625, self.window.height * 1 / 12,
-                                    self.window.width * 0.09375, circles_texture)
+        self.circles.create_circles(self.igrok.five_sposobs, 634,
+                                    -20,
+                                    260, circles_texture)
+        # x - 0.2625 (504)
+        # y - 1/12 (90)
+        # rasst - 0.09375 (180)
+
+        # 0.27
+        # 0.73
 
         texture_list = instruments.TextureList()
         texture_list.load_textures(5, "resources/sposob", ".png", False)
@@ -245,15 +251,15 @@ class BetaViev(arcade.View):
         self.fizika.add_sprite_list(self.walls_list, friction=WALL_FRICTION,
                                     body_type=self.fizika.STATIC, collision_type="wall")
 
-        self.wave(2, vrags.PRdd, 1700, 1900, 192)
-        # self.wave(1, vrags.PMdd, 750, 1000, 192)
-        # self.wave(2, vrags.OpMdd2, 400, 600, 192)
-        # self.wave(2, vrags.OpMdd1, 500, 920, 192)
-        # self.wave(2, vrags.OpRdd1, 1200, 1400, 192)
-        # self.wave(1, vrags.OpRdd2, 450, 540, 192)
-        # self.wave(2, vrags.G2, 1100, 1400, 192)
-        # self.wave(2, vrags.G1, 650, 1250, 192)
-        # self.wave(1, vrags.G3, 700, 1300, 192)
+        # self.wave(2, aarons.PRdd, 1700, 1900, 192)
+        # self.wave(1, aarons.PMdd, 750, 1000, 192)
+        # self.wave(2, aarons.OpMdd2, 400, 600, 192)
+        # self.wave(2, aarons.OpMdd1, 500, 920, 192)
+        # self.wave(2, aarons.OpRdd1, 1200, 1400, 192)
+        # self.wave(1, aarons.OpRdd2, 450, 540, 192)
+        # self.wave(2, aarons.G2, 1100, 1400, 192)
+        # self.wave(2, aarons.G1, 650, 1250, 192)
+        # self.wave(1, aarons.G3, 700, 1300, 192)
 
         for vrag in self.vrag_list:
             for drug in self.vrag_list:
@@ -349,6 +355,19 @@ class BetaViev(arcade.View):
 
         self.circles.draw(self.x, self.y)
 
+        arcade.draw_circle_filled(self.x + self.window.width, self.y + self.window.height, 10, arcade.color.WHITE)
+        arcade.draw_circle_filled(self.x + 0, self.y + self.window.height, 10, arcade.color.WHITE)
+        arcade.draw_circle_filled(self.x + 0, self.y + 0, 10, arcade.color.WHITE)
+        arcade.draw_circle_filled(self.x + self.window.width, self.y + 0, 10, arcade.color.WHITE)
+
+        arcade.draw_circle_filled(self.x + self.window.width, self.y + self.window.height
+                                  + (self.kamera.zoom ** 2 * self.window.height - self.window.height) * 0.73, 10, arcade.color.GRAY)
+        kry_x = (self.window.width * 1.44 - self.window.width) * 0.27
+        arcade.draw_circle_filled(self.x - kry_x, self.y + self.window.height, 10, arcade.color.GRAY)
+        arcade.draw_circle_filled(self.x + 0, self.y - 61.236, 10, arcade.color.GRAY)
+        arcade.draw_circle_filled(self.x + self.window.width, self.y - 61.236, 10, arcade.color.GRAY)
+
+        # 73 yf 27
 
         # nearest_wall_list = instruments.nearest(self.igrok.techenie.point, self.walls_list, 7)
         # s = 0
@@ -527,7 +546,7 @@ class BetaViev(arcade.View):
                 # self.igrok.test.fight = True
                 # self.fizika.sprites[self.igrok].body.body_type = self.fizika.KINEMATIC
                 for x in range(490, 1000, 100):
-                    vrag = vrags.Balvanchik(self.igrok, "Balvan", self.walls_list)
+                    vrag = aarons.Balvanchik(self.igrok, "Balvan", self.walls_list)
                     vrag.position = x, 300
                     self.vrag_list.append(vrag)
                     self.zhivie_vrag_list.append(vrag)
@@ -681,7 +700,7 @@ class BetaViev(arcade.View):
         self.y = self.kamera.position[1]
 
 
-win = arcade.Window(W, H)
+win = arcade.Window(W, H, fullscreen=True)
 viev1 = BetaViev()
 viev1.setup()
 win.show_view(viev1)

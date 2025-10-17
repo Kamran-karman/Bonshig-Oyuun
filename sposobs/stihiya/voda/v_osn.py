@@ -452,19 +452,25 @@ class Lezviya(voda.VodaFight):
         self.animations.slovar_animation[ACTION][2] = 0.5
         self.animations.slovar_animation[ACTION][3].load_textures(8, f"{self.animations.main_patch}lezviya", instruments.PNG)
 
+        self.__lezv = False
+
     def on_update(self, delta_time: float = 1 / 60, physics_engine: arcade.PymunkPhysicsEngine = None) -> None:
         super().on_update()
         self.update_sposob()
         self.update_v()
         if self.s == 1:
+            print("=============")
             self.func_mana()
         self.update_mor()
         self.kd_timer_mana()
         self.update_position()
 
         if self.action:
+
             self.change_x = 0.1 * self.storona
             for sprite in self.sprite_list:
+                if self.animations.slovar_animation[ACTION][0] == 0:
+                    self.slovar[sprite] = False
                 if arcade.check_for_collision(self, sprite) and sprite.hp > 0 and self.udar_or_block(sprite):
                     self.oglush(sprite)
                     self.dvizh_sprite_func(sprite, physics_engine)

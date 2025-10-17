@@ -102,7 +102,7 @@ class __Gorozhanen(vrags.Vrag):
         self.draw_sposob_list()
 
     def _move_not_ii(self):
-        if self.not_ii:
+        if self.not_ii and not self.oglush_for_sposob and not self.stan_for_sposob:
             self.can_jump()
             self.move()
 
@@ -146,6 +146,7 @@ class G1(__Gorozhanen):
                     self.walk = False
                     self.s_action += 1
                     if self.s_action >= self.timer_for_s_action or self.popad:
+                        print(21)
                         self.beg = False
                         self.walk = True
                         self.povedenie = 0
@@ -804,7 +805,6 @@ class OpRdd1(__OpRdd):
                     if drug.name != self.name:
                         break
                 else:
-                    print("_5____--")
                     self.povedenie = 5
                     self._radius_stop.scale = self.radius_ataki.scale
                     self.__odni = True
@@ -1164,7 +1164,6 @@ class OpRdd2(__OpRdd):
                                 self.oruzh.action = True
                             elif not self.oruzh.action and not self.kulak_ognya.kd and not self.kulak_ognya.action:
                                 self.kulak_ognya.action = True
-            # print(self.povedenie)
 
         elif self.oglush:
             self.povedenie = 0
@@ -1364,7 +1363,6 @@ class PMdd(__Polic):
                     self.apply_force_x(0)
                     self.move()
                     self.povedenie = 6
-                    # print(1000)
 
             if self.povedenie != 7:
                 for drug in self.drug_list:
@@ -1567,15 +1565,11 @@ class PMdd(__Polic):
                             self.not_ii = False
                             self.friction = 0.7
                             self.povedenie = 0
-                            # print(self.pistolet.action, self.pistolet.perezaryadka)
-                            # print("-"*10)
-                            # print(self.pistolet.kd, self.pistolet.perezaryadka)
                         elif not self.pistolet.kd and not self.pistolet.action and self.pistolet.perezaryadka:
                             self.not_ii = False
                             self.friction = 0.7
                             self.povedenie = 0
                         if not self.pistolet.perezaryadka and self.pistolet.kd:
-                            # print("-_- :] ")
                             self.pistolet.perezaryadka_func()
                     case 7:
                         sposob_action = self._min_mana_sposob(self.kulak_ognya, self.ognen_snaryad)
@@ -1587,7 +1581,6 @@ class PMdd(__Polic):
                             self.beg, self.walk = self.walk, self.beg
                             self.povedenie = 1
             else:
-                # print(1, self.povedenie, self.mana)
                 self.timer_for_s_block *= 2
                 if 0 < self.povedenie < 3:
                     if not self.radius_action.check_collision(self.igrok):
@@ -1746,15 +1739,11 @@ class PMdd(__Polic):
                             self.not_ii = False
                             self.friction = 0.7
                             self.povedenie = 0
-                            # print(self.pistolet.action, self.pistolet.perezaryadka)
-                            # print("-"*10)
-                            # print(self.pistolet.kd, self.pistolet.perezaryadka)
                         elif not self.pistolet.kd and not self.pistolet.action and self.pistolet.perezaryadka:
                             self.not_ii = False
                             self.friction = 0.7
                             self.povedenie = 0
                         if not self.pistolet.perezaryadka and self.pistolet.kd:
-                            # print("-_- :] ")
                             self.pistolet.perezaryadka_func()
 
         elif self.oglush:
@@ -1764,6 +1753,10 @@ class PMdd(__Polic):
             self.mech_s_popal = self.s_kombo = self.mech_ogon.s_popal = self.force_x = 0
             self.mech_ogon.timer_for_s_kd = 30
             self.otstup_rasst = 500
+
+        # print(self.povedenie)
+
+        # не функция снизу
 
         self._move_not_ii()
 
@@ -1854,7 +1847,6 @@ class PRdd(__Polic):
 
                     for wall in self.walls_list:
                         if self.kvadrat_radius.check_collision(wall) and wall.center_y > self.top:
-                            print(self.povedenie, self.state, "________============")
                             self.povedenie = self.__pov_list[3]
                             self.not_ii = self._stop_update_storona = True
                             self.apply_force_x(0)
@@ -2223,8 +2215,12 @@ class PRdd(__Polic):
                             else:
                                 s = 0
                                 for sposob8 in self.__sposob_list8:
-                                    if not sposob8.kast:
-                                        s += 1
+                                    if sposob8.klass == sposobs.STIHIYA:
+                                        if not sposob8.kast:
+                                            s += 1
+                                    else:
+                                        if not sposob8.action:
+                                            s += 1
 
                                 if s == len(self.__sposob_list8):
                                     self.block.block = True
@@ -2248,9 +2244,6 @@ class PRdd(__Polic):
                             self.not_ii = self._stop_update_storona = True
                             self.friction = 1
                             self.mech_ogon.ogon_state = False
-
-            print(self.povedenie, self.mana, self.hp)
-            # print(self.povedenie, self.storona)
 
         self._move_not_ii()
 
@@ -2286,7 +2279,6 @@ class PRdd(__Polic):
             if ((self.igrok.center_x > drug.center_x > self.center_x + x
                  or self.igrok.center_x < drug.center_x < self.center_x - x)
                     and not self.radius_ataki.check_collision(self.igrok)):
-                #print(self.igrok.center_x, drug.center_x, self.center_x - x)
                 return True
         return False
 

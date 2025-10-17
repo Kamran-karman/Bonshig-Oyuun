@@ -17,7 +17,7 @@ from animations.pers_animations import spec_battle_animations
 class Oyuun(battles.VodaPers):
     def __init__(self, sprite_list, walls_list: arcade.SpriteList):
         super().__init__('Oyuun', sprite_list, walls_list)
-        self.max_hp = 4000
+        self.max_hp = 6000
         self.max_mana = 10000
         self.max_stamina = 300
         self.harakteristiki()
@@ -27,7 +27,7 @@ class Oyuun(battles.VodaPers):
 
         self.udar = fiz_sposob.Udar(self, sprite_list, 15, 30, True)
         self.udar.main_block = False
-        self.uron = 30
+        self.uron = 20
         self.sposob_list.append(self.udar)
 
         self.animations = spec_battle_animations.OyuunAnimations(self)
@@ -43,6 +43,7 @@ class Oyuun(battles.VodaPers):
         self.toggle = False
 
         self.five_sposobs = arcade.SpriteList()
+        self.osn_sposobs = arcade.SpriteList()
 
         self.hlist = v_osn.Hlist(self, self.sprite_list)
         self.sposob_list.append(self.hlist)
@@ -83,6 +84,7 @@ class Oyuun(battles.VodaPers):
         self.block = self.voda_shchit
 
         self.appends_voda_sposobs()
+        self.appends_osn_sposobs()
 
         self.color_hit_box = []
         for i in range(9):
@@ -143,6 +145,11 @@ class Oyuun(battles.VodaPers):
         self.voda_udars.draw()
 
         # self.draw_hit_box(arcade.color.RED)
+
+    def appends_osn_sposobs(self):
+        for sposob in self.sposob_list:
+            if sposob.osn:
+                self.osn_sposobs.append(sposob)
 
 
 class BetaOyuun(battles.VodaPers):

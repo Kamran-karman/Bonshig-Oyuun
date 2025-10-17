@@ -54,9 +54,9 @@ class GlavaFirstView(views.play_views.LevelView):
 
         self.wave_slovar_list = []
         wave1_slovar = {
-            aarons.G2: (1, NACH_X + 11000, NACH_X + 11002, 160, True),
-            aarons.PMdd: (1, NACH_X + 11250, NACH_X + 11252, 160, True),
-            aarons.G1: (3, NACH_X + 11300, NACH_X + 11602, 160, True)
+            aarons.G2: (1, NACH_X + 11000, NACH_X + 11001, 160, True),
+            aarons.PMdd: (1, NACH_X + 11250, NACH_X + 11251, 160, True),
+            aarons.G1: (3, NACH_X + 11300, NACH_X + 11600, 160, True)
         }
         self.wave_slovar_list.append(wave1_slovar)
 
@@ -272,7 +272,7 @@ class GlavaFirstView(views.play_views.LevelView):
                 self.s_kast_scena = 4
                 if self.igrok not in self.fizika.sprites:
                     super().setup()
-                self.kamera.zoom = 0.9
+                self.kamera.zoom = 1.2
                 self.fizika.set_position(self.igrok, (self.spec_object[2].right + 100, 163))
                 self.fizika.remove_sprite(self.vrag_napad)
                 self.vrag_list.remove(self.vrag_napad)
@@ -729,26 +729,28 @@ class GlavaFirstView(views.play_views.LevelView):
                     self.timer_for_s_zoom = 60
                     self.v_zoom = 0.015
             elif self.dialog.s_dialog >= 18:
+                if len(self.vrag_list) == 0:
+                    self.waves(self.wave_slovar_list[0])
                 x1 = self.spec_object[0].center_x
                 x2 = self.spec_object[2].center_x
                 if self.igrok.left > self.spec_object[2].right - 100:
                     if not self.igrok.techenie.action:
                         self.igrok.techenie.hod(0, self.walls_list)
                         self.igrok.techenie.action = False
-
                     self.s_ks += 1
                     if self.s_ks > 180:
                         self.move_sprite(self.igrok, 1 / 2, (IGROK_MOVE_GROUND, 0), FRICTION_IGROK)
-                        if self.kamera.zoom > 0.9:
+                        if self.kamera.zoom > 1.2:
                             if not self.zoom_plus:
                                 self.zoom_plus = True
                                 self.timer_for_s_zoom = 90
-                                self.v_zoom = 1 / 225
+                                self.v_zoom = 1 / 900
+
                             self.kamera_koef_x -= 4 / 45
                             self.kamera_koef_y += 13 / 450
                         else:
                             self.zoom_plus = False
-                            self.kamera.zoom = 0.9
+                            self.kamera.zoom = 1.2
                             self.kamera_koef_x = 2
                             self.kamera_koef_y = 4
                         if arcade.check_for_collision_with_list(self.igrok, self.walls_list) and not self.zoom_plus:
@@ -778,7 +780,6 @@ class GlavaFirstView(views.play_views.LevelView):
                                                       [self.kast_scena, self.s_kast_scena])
                                 open_files.write_file(r'files/states.txt', [self.fight])
 
-                            self.waves(self.wave_slovar_list[0])
                     else:
                         if not self.igrok.toggle:
                             self.fizika.set_friction(self.igrok, 1)
@@ -851,7 +852,6 @@ class GlavaFirstView(views.play_views.LevelView):
                 self.vrag_list.append(vrag)
 
         self.filling_vrag_lists()
-        print(len(self.zhivie_vrag_list))
 
     def waves(self, slovar: dict):
         for key in slovar:

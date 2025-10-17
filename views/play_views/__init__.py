@@ -112,28 +112,34 @@ class LevelView(arcade.View):
         self.y = 0
 
         self.line_list = line.LineList()
-        line_hp = line.Line(self.igrok.max_hp, self.window.width * 0.0125, self.window.width * 0.175,
-                            self.window.height * 17 / 18, self.kamera)
+        line_hp = line.Line(self.igrok.max_hp, 1.44 * self.window.width * -0.0752662037037037,
+                            1.44 * self.window.width * 0.27126736111111116,
+                            1.44 * self.window.height * 17 / 18, self.kamera)
         line_hp.name = 'hp'
         self.line_list.append(line_hp)
         colors_v = {0: (0, 200, 255, 255), 1: (0, 200, 255, 255), 2: (0, 200, 255, 255), 3: (0, 200, 255, 255),
                     4: (0, 200, 255, 255)}
-        line_v = line.Line(self.igrok.v_max, self.window.width * 0.0125, self.window.width * 0.10625,
-                           self.window.height * 23 / 30, self.kamera, 40, colors_v)
+        line_v = line.Line(self.igrok.v_max, 1.44 * self.window.width * -0.0752662037037037,
+                           self.window.width * 0.10625,
+                           self.window.height, self.kamera, 43, colors_v)
         line_v.name = 'voda'
         self.line_list.append(line_v)
 
-        self.circles = circles.Circles(CIRCLES_RADIUS)
+        s = self.window.height * 1.44 * self.window.width * 1.44
+        s_c = s * 0.0009469017209170626
+        radius = (s_c / math.pi) ** 0.5
+        self.circles = circles.Circles(radius * 2)
         circles_texture = instruments.TextureList()
         circles_texture.load_textures(5, 'resources/sposob', instruments.PNG, False)
-        self.circles.create_circles(self.igrok.five_sposobs, self.window.width * 0.2625, self.window.height * 1 / 12,
-                                    self.window.width * 0.09375, circles_texture)
+        self.circles.create_circles(self.igrok.five_sposobs, 1.44 * self.window.width * 0.2293113426,
+                                    1.44 * self.window.height * -0.0128600823, 1.44 * self.window.width * 0.0940393519,
+                                    circles_texture)
 
         self.levo = False
         self.pravo = False
 
         self.kast_scena = False
-        self.list_kast_scen: list[bool::] = []
+        self.list_kast_scen: list[bool] = []
         self.s_kast_scena: int = 0
         self.s_ks = 0
 
@@ -457,11 +463,11 @@ class LevelView(arcade.View):
         # sprite.stamina -= minus_stamina
 
     def update_kast_scena(self):
-        if self.kast_scena and not self.igrok.kast_scena:
+        if self.kast_scena:
             self.igrok.kast_scena = True
             for vrag in self.vrag_list:
                 vrag.kast_scena = True
-        elif not self.kast_scena and self.igrok.kast_scena:
+        else:
             self.igrok.kast_scena = False
             for vrag in self.vrag_list:
                 vrag.kast_scena = False

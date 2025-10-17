@@ -237,9 +237,11 @@ class ViborSosob(MyUIManager):
                     new_but_state(True)
                     self.igrpk.five_sposobs[self._nomer_sposob] = self.igrpk.osn_sposobs[self2.num]
                     active_buts[self._nomer_sposob] = self2.num
+                    print(0)
                     self2.deactive = False
                     new_but_state(False)
-                except:
+                except Exception as ex:
+                    print(ex)
                     return
                 child_list = []
                 for child in self._v_box_five.children:
@@ -318,6 +320,7 @@ class ViborSosob(MyUIManager):
             self.__s_active = 0
 
         if not self._enabled:
+            self.window.set_mouse_visible()
             self._enabled = True
             self.window.push_handlers(
                 self.on_resize,
@@ -345,6 +348,7 @@ class ViborSosob(MyUIManager):
                 self.__s_kd = 0
 
         if self._enabled:
+            self.window.set_mouse_visible(False)
             self._enabled = False
             self.window.remove_handlers(
                 self.on_resize,

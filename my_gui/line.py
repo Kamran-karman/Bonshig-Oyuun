@@ -18,14 +18,14 @@ class Line:
         STATE4: (255, 25, 0, 255)
     }
 
-    def __init__(self, max_znach: float, otnos_start: float, otnos_end: float, otnos_flatness: float,
-                 kamera: Camera, line_width=30, colors=None):
+    def __init__(self, max_znach: float, otnos_start: float, dlina: float, otnos_flatness: float,
+                 kamera: Camera, line_width=40, colors=None):
         self.name = ''
 
         self.max_znach = max_znach
-        self.otnos_start = otnos_start
-        self.otnos_end = otnos_end
-        self.otnos_flatness = otnos_flatness
+        self.otnos_start = round(otnos_start)
+        self.__dlina = round(dlina)
+        self.otnos_flatness = round(otnos_flatness)
         self._start = 0
         self._end = 0
         self._flatness = 0
@@ -34,33 +34,33 @@ class Line:
         self.znach = self.max_znach
         self._kamera = kamera
 
-        self.__dlina = abs(self.otnos_start - self.otnos_end)
         self.__attitude = self.__dlina / self.max_znach
 
         self.state = STATE1
 
     def update(self, znach: float, x: float, y: float):
         self._start = self.otnos_start + x + 67
-        self._end = self.otnos_end + x + 67
+        end = self.otnos_start + self.__dlina
+        self._end = end + x + 67
         self._flatness = self.otnos_flatness + y - 125
         if self.znach > znach:
             raznica = self.znach - znach
-            self.otnos_end -= raznica * self.__attitude
+            end -= raznica * self.__attitude
             self.znach = znach
         elif self.znach < znach:
             raznica = znach - self.znach
-            self.otnos_end += raznica * self.__attitude
+            end += raznica * self.__attitude
             self.znach = znach
 
-        if round(self.otnos_end - self.otnos_start, 4) > self.__dlina:
+        if round(end - self.otnos_start, 4) > self.__dlina:
             self.state = STATE0
-        elif self.__dlina >= round(self.otnos_end - self.otnos_start, 4) > self.__dlina * 0.75:
+        elif self.__dlina >= round(end - self.otnos_start, 4) > self.__dlina * 0.75:
             self.state = STATE1
-        elif self.__dlina * 0.75 >= round(self.otnos_end - self.otnos_start, 4) > self.__dlina * 0.5:
+        elif self.__dlina * 0.75 >= round(end - self.otnos_start, 4) > self.__dlina * 0.5:
             self.state = STATE2
-        elif self.__dlina * 0.5 >= round(self.otnos_end - self.otnos_start, 4) > self.__dlina * 0.25:
+        elif self.__dlina * 0.5 >= round(end - self.otnos_start, 4) > self.__dlina * 0.25:
             self.state = STATE3
-        elif self.__dlina * 0.25 >= round(self.otnos_end - self.otnos_start, 4):
+        elif self.__dlina * 0.25 >= round(end - self.otnos_start, 4):
             self.state = STATE4
 
     def draw(self):
@@ -82,7 +82,7 @@ class LineList:
         for line in self.__line_list:
             line.draw()
 
-    def update(self, x: float, y: float, znach_slovar: dict[str:float] = dict):
+    def update(self, x: float, y: float, znach_slovar: dict[str: float]):
         if len(znach_slovar) != 0:
             for line in self.__line_list:
                 line.update(znach_slovar[line.name], x, y)
