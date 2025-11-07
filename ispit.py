@@ -369,6 +369,9 @@ class BetaViev(arcade.View):
 
         # 73 yf 27
 
+        self.walls_list[0].draw_hit_box(arcade.color.RED, 3)
+        arcade.draw_circle_filled(64,self.walls_list[0].top, 10, arcade.color.RED)
+
         # nearest_wall_list = instruments.nearest(self.igrok.techenie.point, self.walls_list, 7)
         # s = 0
         # colors = [
@@ -389,6 +392,8 @@ class BetaViev(arcade.View):
         else:
             self.vibor_sposob.disable()
         self.kamera.use()
+
+        arcade.draw_point(self.igrok.techenie.center_x, self.igrok.techenie.center_y, arcade.color.PINK, 50)
 
     def move_sprite(self, sprite, minus_stamina, force, friction):
         # force, friction = sprite.oglush_force(force, friction, 2)
@@ -497,18 +502,18 @@ class BetaViev(arcade.View):
                 if not self.igrok.toggle:
                     self.move_sprite(self.igrok, 0.2 / 60, (IGROK_MOVE_GROUND, 0), friction)
                 else:
-                    self.igrok.techenie.hod(15, self.walls_list)
+                    self.igrok.techenie.new_hod(15, self.walls_list, 0)
             elif not self.pravo and self.levo:
                 #self.fizika.set_position(self.igrok, (self.igrok.center_x - 100, self.igrok.center_y))
                 self.igrok.storona = 1
                 if not self.igrok.toggle:
                     self.move_sprite(self.igrok, 0.2 / 60, (-IGROK_MOVE_GROUND, 0), friction)
                 else:
-                    self.igrok.techenie.hod(-15, self.walls_list)
+                    self.igrok.techenie.new_hod(-15, self.walls_list, 1)
             else:
                 #self.igrok.storona = 0
                 # print("____________")
-                self.igrok.techenie.hod(0, self.walls_list)
+                self.igrok.techenie.new_hod(0, self.walls_list, self.igrok.storona)
                 # self.fizika.set_friction(self.igrok, 1)
 
         self.igrok.on_update()
@@ -589,7 +594,7 @@ class BetaViev(arcade.View):
             #     self.fizika.space.add(shape)
 
             if symbol == arcade.key.RSHIFT:
-                self.igrok.techenie.action = not self.igrok.techenie.action
+                self.igrok.techenie.action = True
 
             if symbol == arcade.key.E:
                 self.igrok.kritik = not self.igrok.kritik
@@ -666,6 +671,9 @@ class BetaViev(arcade.View):
             new_body.body_type = self.fizika.DYNAMIC
             self.fizika.sprites[self.igrok].body = new_body
             self.fizika.set_position(self.igrok, (0, 300))
+
+        if _symbol == arcade.key.RSHIFT:
+            self.igrok.techenie.action = False
 
 
             # self.fizika.remove_sprite(self.igrok)

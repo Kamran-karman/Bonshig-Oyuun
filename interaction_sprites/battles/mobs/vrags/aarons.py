@@ -1,5 +1,5 @@
 import random
-
+import sys
 import hit_box_and_radius
 import sposobs
 from interaction_sprites import battles
@@ -12,11 +12,16 @@ from sposobs import dal_oruzh
 from sposobs.stihiya import ogon
 from interaction_sprites.battles.mobs import vrags
 
+__al__ = [
+    'G1', 'G2', 'G3', 'OpMdd1', 'OpMdd2',
+    'OpRdd1', 'OpMdd2', 'PMdd', 'PRdd'
+]
+
 
 class __Gorozhanen(vrags.Vrag):
     def __init__(self, igrok, name, walls_list: arcade.SpriteList):
         super().__init__(igrok, name, walls_list)
-        self.max_hp = 1000
+        self.max_hp = 900
         self.max_mana = 25
         self.max_stamina = 100
         self.harakteristiki()

@@ -6,7 +6,8 @@ import instruments
 from sposobs.stihiya.voda.voda_h import TIMER_FOR_S_OBRAT, TIMER_FOR_S_VERTIK, VERTIK_CHANGE_Y, POGRESHOST, VERTIK_KOEF, \
     VVERH_KOEF, VVERH_CHANGE_Y, SUMMA_RAZNICA, VVERH_RAZNICA, VERTIK_ANGLE, VVERH_ANGLE, FALL_CHANGE, \
     FIRST_GRANICA_Y_EJECTION, FIRST_CHANGE_Y_EJECTION, SECOND_GRANICA_Y_EJECTION, SECOND_CHANGE_Y_EJECTION, \
-    THIRD_GRANICA_Y_EJECTION, THIRD_CHANGE_Y_EJECTION, ELSE_CHANGE_Y_EJECTION, CHANGE_X_EJECTION
+    THIRD_GRANICA_Y_EJECTION, THIRD_CHANGE_Y_EJECTION, ELSE_CHANGE_Y_EJECTION, CHANGE_X_EJECTION, VVERH_KOEF_CHANGE_X, \
+    VodohodState
 
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
     os.chdir(sys._MEIPASS)
@@ -41,8 +42,6 @@ class Voda(stihiya.Stihiya):
                     s += 1
 
             if s == len(V_LIST):
-                if self.action and self.pers.name == "Oyuun":
-                    print(self.pers)
                 self.action = False
                 self.s += self.timer_for_s
 
@@ -197,22 +196,13 @@ class VodoHod(VodaFight):
 
         self.fizika: arcade.PymunkPhysicsEngine = Any
 
-        self.otnos = 0
-        self.point = (0, 0)
-        self.pred_change_x = 0
+        self.state = VodohodState.OBICH
+        self.last_s_state = 0
 
-    def hod(self, change_x, walls_list):
+    def hod(self, change_x: float, walls_list: arcade.SpriteList, storona: int):
         if self.pers.oglush:
             self.action = False
         if self.action:
-            def obich():
-                self.s_vertik = 0
-                self.vverh = self.vertik = self.big = False
-                self.change_x = change_x
-
-            def vertik_func():
-                self.vverh = self.vertik = True
-                self.change_y = VERTIK_CHANGE_Y
 
             def set_angle(angle: int):
                 if self.pers.storona == 1:
@@ -220,129 +210,47 @@ class VodoHod(VodaFight):
                 else:
                     self.pers.angle = self.angle = -angle
 
-            height = self.height / 4
-            if change_x > 0:
-                self.storona = 0
-            elif change_x < 0:
-                self.storona = 1
+            height = self.height / 2
+            self.storona = storona
 
-            if self.storona == 0:
-                self.point = (self.right, self.center_y - height)
-            else:
-                self.point = (self.left, self.center_y - height)
-
-            self.pers.oglush_for_sposob = True
-
-            nearest_wall_list = instruments.nearest(self.point, walls_list, 7)
-            near_wall = nearest_wall_list[0]
-            if near_wall.top < self.center_y - height:# and abs(near_wall.top - (self.center_y - height)) > 3:
-                for i in range(1, 3):
-                    if nearest_wall_list[i].height > near_wall.height and near_wall.center_y < nearest_wall_list[i].center_y:
-                        near_wall = nearest_wall_list[i]
-
-            if self.pred_change_x != change_x and self.pred_change_x != 0 and self.vertik:
-                self.vertik = False
-                self.obrat = True
-                self.s_obrat = 0
-            if change_x != 0:
-                self.pred_change_x = change_x
-
-            if self.obrat:
-                self.vverh = True
-                self.change_x = change_x
-                self.s_obrat += 1
-                if self.s_obrat >= self.timer_for_s_obrat:
-                    self.s_obrat = 0
-                    self.obrat = False
-
-            if not self.obrat:
-                if change_x != 0:
-                    height = self.height / 2
-
-                    if near_wall.top > self.center_y - height / 2 and abs(
-                            near_wall.top - (self.center_y - height / 2)) > POGRESHOST:
-                        if near_wall.height >= height * VERTIK_KOEF and arcade.check_for_collision_with_list(self, walls_list):
-                            self.big = True
-                            if abs(near_wall.top - (self.center_y - height / 2)) <= height * VVERH_KOEF:
-                                self.vverh = True
-                                self.vertik = False
-                                self.change_x = change_x
+            if arcade.check_for_collision_with_list(self, walls_list):
+                s = 0
+                for wall in walls_list:
+                    if arcade.check_for_collision(self, wall):
+                        if wall.height >= height * VVERH_KOEF and wall.top > self.center_y - height * 0.85:
+                            s += 1
+                            if wall.height >= height * VERTIK_KOEF and wall.top > self.center_y - height * 0.85:
+                                if self.s_vertik < self.timer_for_s_vertik:
+                                    self.change_x = change_x * 0.4
+                                    if self.state != VodohodState.VERTIK:
+                                        self.state = VodohodState.VERTIK
+                                    set_angle(45)
+                                    self.s_vertik += 1
+                                else:
+                                    set_angle(90)
+                                    self.change_x = 0
+                                    self.change_y = VERTIK_CHANGE_Y
+                            else:
+                                self.s_vertik = 0
+                                if self.state != VodohodState.VVERH:
+                                    set_angle(45)
+                                    self.state = VodohodState.VVERH
+                                self.change_x = change_x * VVERH_KOEF_CHANGE_X
                                 self.change_y = VVERH_CHANGE_Y
-                            else:
-                                vertik_func()
-                                self.change_x = change_x
-                        elif near_wall.height >= height * VVERH_KOEF and arcade.check_for_collision_with_list(self, walls_list):
-                            self.big = False
-                            self.vverh = True
-                            self.vertik = False
-                            self.change_x = change_x
-                            self.change_y = VVERH_CHANGE_Y
-                        else:
-                            obich()
-                    else:
-                        obich()
-
-                    if self.vverh and not self.big:
-                        summa = near_wall.height
-                        nearest_wall_list.remove(near_wall)
-                        s = 0
-                        for i in range(len(nearest_wall_list)):
-                            if (near_wall.center_y < nearest_wall_list[i].center_y
-                                    and abs(near_wall.center_x - nearest_wall_list[i].center_x) < SUMMA_RAZNICA):
-                                summa += nearest_wall_list[i].height
-                                s += 1
-
-                        nearest_wall_list.append(near_wall)
-
-                        if summa > height * VERTIK_KOEF:
-                            vertik_func()
-                else:
-                    obich()
-
-            if self.vverh:
-                raznica = VVERH_RAZNICA
-                if self.vertik:
-                    self.s_vertik += 1
-                    if self.s_vertik >= self.timer_for_s_vertik and arcade.check_for_collision(near_wall, self):
-                        self.change_x = 0
-                        set_angle(VERTIK_ANGLE)
-                    else:
-                        if self.s_vertik < self.timer_for_s_vertik:
-                            set_angle(VVERH_ANGLE)
-                else:
-                    self.s_vertik = 0
-                    set_angle(VVERH_ANGLE)
-            else:
-                raznica = 0
-                self.pers.angle = self.angle = 0
-                if not arcade.check_for_collision_with_list(self, walls_list):
-                    if self.change_y >= 0:
-                        self.change_y = FALL_CHANGE
-                else:
-                    for wall in walls_list:
-                        if wall.center_y < self.center_y and abs(wall.top - self.bottom) >= POGRESHOST and arcade.check_for_collision(self, wall): #  and abs(self.center_x - wall.center_x) < 10:
-                            if abs(wall.top - self.bottom) < FIRST_GRANICA_Y_EJECTION:
-                                self.change_y = FIRST_CHANGE_Y_EJECTION
-                            elif SECOND_GRANICA_Y_EJECTION > abs(wall.top - self.bottom) >= FIRST_CHANGE_Y_EJECTION:
-                                self.change_y = SECOND_CHANGE_Y_EJECTION
-                            elif THIRD_GRANICA_Y_EJECTION > abs(wall.top - self.bottom) >= SECOND_GRANICA_Y_EJECTION:
-                                self.change_y = THIRD_CHANGE_Y_EJECTION
-                            else:
-                                self.change_y = ELSE_CHANGE_Y_EJECTION
                             break
                         else:
-                            self.change_y = 0
-
-            if (arcade.check_for_collision(self, near_wall) and ((self.storona == 0 and
-                abs(self.right - near_wall.left) > raznica) or (self.storona == 1 and abs(self.left - near_wall.right) > raznica))
-                and near_wall.center_y > self.bottom) and not self.obrat:
-                if self.vverh:
-                    self.change_x = 0
-                else:
-                    if self.storona == 0:
-                        self.change_x = -CHANGE_X_EJECTION
-                    else:
-                        self.change_x = CHANGE_X_EJECTION
+                            if self.last_s_state == 0:
+                                set_angle(0)
+                                self.state = VodohodState.OBICH
+                                self.s_vertik = 0
+                                self.change_y = 0
+                                self.change_x = change_x
+                self.last_s_state = s
+            else:
+                set_angle(0)
+                self.s_vertik = 0
+                self.change_x = change_x
+                self.change_y = FALL_CHANGE
 
     def update_pers_body_type(self):
         if self.action:

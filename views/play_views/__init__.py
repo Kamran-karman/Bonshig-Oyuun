@@ -298,7 +298,7 @@ class LevelView(arcade.View):
 
                 if y > 0:
                     self.prover_vrag_y += 1
-                if self.prover_vrag_y > 2 and not vrag.is_on_ground:
+                if self.prover_vrag_y > 2 and not vrag.fizika.is_on_ground:
                     y = 0
 
                 force = (x, y)
@@ -343,11 +343,11 @@ class LevelView(arcade.View):
                 #print(1)
                 # self.igrok.fight = False
                 if self.pravo and not self.levo:
-                    self.igrok.techenie.hod(HOD_SPEED, self.walls_list)
+                    self.igrok.techenie.hod(HOD_SPEED, self.walls_list, 0)
                 elif not self.pravo and self.levo:
-                    self.igrok.techenie.hod(-HOD_SPEED, self.walls_list)
+                    self.igrok.techenie.hod(-HOD_SPEED, self.walls_list, 1)
                 else:
-                    self.igrok.techenie.hod(0, self.walls_list)
+                    self.igrok.techenie.hod(0, self.walls_list, self.igrok.storona)
 
     def press_escape(self, symbol: int):
         if symbol == arcade.key.ESCAPE:

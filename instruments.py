@@ -4,6 +4,8 @@ import sys
 import arcade
 from arcade import Texture
 
+from arcade.geometry import is_point_in_polygon
+
 PNG = '.png'
 
 
@@ -77,63 +79,46 @@ def nearest_pers(sprite: arcade.Sprite, sprite_list_1: arcade.SpriteList, neobho
         return sprite_list
 
 
-def nearest(point: tuple[float, float], input_sprite_list: arcade.SpriteList, kol_vo: int = 1):
+MIN_SDVIG_PIXEL = 7
+MAX_SDVIG_PIXEL = MIN_SDVIG_PIXEL + 50
+IT_SDVIG_PIXEL = 5
+
+
+def nearest(point: tuple[float, float], input_sprite_list: arcade.SpriteList):
     rast_slovar = {}
     output_sprite_list = arcade.SpriteList()
 
-    for sprite in input_sprite_list:
-        rast_list = []
+    def sdvig(point_list, sdvig_x: int, sdvig_y: int):
+        # print(point[0] + sdvig_x, point[1] - sdvig_y, point_list)
+        return is_point_in_polygon(point[0] + sdvig_x, point[1] - sdvig_y, point_list)
 
-        rast_x = abs(point[0] - sprite.center_x)
-        rast_y = abs(point[1] - sprite.center_y)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.left)
-        rast_y = abs(point[1] - sprite.center_y)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.right)
-        rast_y = abs(point[1] - sprite.center_y)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.center_x)
-        rast_y = abs(point[1] - sprite.top)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.center_x)
-        rast_y = abs(point[1] - sprite.bottom)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.left)
-        rast_y = abs(point[1] - sprite.bottom)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.right)
-        rast_y = abs(point[1] - sprite.bottom)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.left)
-        rast_y = abs(point[1] - sprite.top)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
-        rast_x = abs(point[0] - sprite.right)
-        rast_y = abs(point[1] - sprite.top)
-        rast = math.hypot(rast_x, rast_y)
-        rast_list.append(rast)
+    sdvig_pixel = MIN_SDVIG_PIXEL
 
-        rast_slovar.update({min(rast_list): sprite})
+    while len(rast_slovar) == 0 and sdvig_pixel < MAX_SDVIG_PIXEL:
+        for sprite in input_sprite_list:
+            sdvig_list = [
+                (0, -sdvig_pixel), (sdvig_pixel, -sdvig_pixel), (sdvig_pixel, 0), (sdvig_pixel, sdvig_pixel),
+                (0, sdvig_pixel), (-sdvig_pixel, sdvig_pixel), (-sdvig_pixel, 0), (-sdvig_pixel, -sdvig_pixel)
+            ]
 
-    if len(rast_slovar) < kol_vo:
-        kol_vo = len(rast_slovar)
-    for i in range(kol_vo):
+            rast_list = []
+
+            for i in sdvig_list:
+                if sdvig(sprite.hit_box.get_adjusted_points(), *i):
+                    rasst = math.hypot(abs(point[0] + i[0] + sprite.center_x),  abs(point[1] + i[1] + sprite.center_y))
+                    rast_list.append(rasst)
+
+            if len(rast_list) > 0:
+                rast_slovar.update({min(rast_list): sprite})
+
+        sdvig_pixel += IT_SDVIG_PIXEL
+
+    # print(rast_slovar)
+    for i in range(len(rast_slovar)):
         output_sprite_list.append(rast_slovar[min(rast_slovar.keys())])
         rast_slovar.pop(min(rast_slovar.keys()))
 
-    if kol_vo == 1:
-        return output_sprite_list[0]
-    else:
-        return output_sprite_list
-
+    return output_sprite_list
 
 
 def poisk_path(key_slovo: str = "Igra"):
