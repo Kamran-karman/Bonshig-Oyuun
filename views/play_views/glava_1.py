@@ -19,6 +19,7 @@ NUMBERS = (1, 2, 3, 4)
 SPEAKERS_DIALOG = ('0', '1', '2', '3', '4', '5', '6')
 
 NACH_X = 200
+RASST = 40000
 
 
 class GlavaFirstView(views.play_views.LevelView):
@@ -54,23 +55,8 @@ class GlavaFirstView(views.play_views.LevelView):
 
         self.s_wave = 0
         self.wave_slovar_list = []
-        wave1_slovar = {
-            aarons.G2: (1, NACH_X + 11000, NACH_X + 11001, 160, True),
-            aarons.PMdd: (1, NACH_X + 11250, NACH_X + 11251, 160, True),
-            aarons.G1: (3, NACH_X + 11300, NACH_X + 11600, 160, True)
-        }
-        self.wave_slovar_list.append(wave1_slovar)
-        wave2_slovar = {
-            aarons.G2: (2, NACH_X + 13000, NACH_X + 13090, 160, True),
-            aarons.G1: (3, NACH_X + 13150, NACH_X + 13450, 160, True),
-            aarons.G3: (2, NACH_X + 13600, NACH_X + 13670, 160, True)
-        }
-        self.wave_slovar_list.append(wave2_slovar)
-        wave3_slovar = {
-            aarons.G2: (1, NACH_X + 14900, NACH_X + 14901, 160, True),
-            aarons.G3: (3, NACH_X + 15700, NACH_X + 16000, 160, True)
-        }
-        self.wave_slovar_list.append(wave3_slovar)
+        self.x_list = [12000, 15000, 18500, 21000, 25000, 27400]
+        self.ind_dom = 3
 
     def setup(self):
         self.update_igrok_pos((NACH_X, 163))
@@ -81,6 +67,8 @@ class GlavaFirstView(views.play_views.LevelView):
         self.interaction_list[0].position = NACH_X + 2200, 128
         self.interaction_list[0].storona = 1
         self.dialog.create_dialog_slovar(NUMBERS, SPEAKERS_DIALOG, "GlavaFirst")
+
+        self.create_wave()
 
         self.vrag_napad.position = NACH_X + 4400, 650
         self.vrag_napad.storona = 1
@@ -120,13 +108,12 @@ class GlavaFirstView(views.play_views.LevelView):
         self.walls_list.append(dom)
         self.spec_object.append(dom)
 
-        x_list = [12000, 14000, 17500]
-        for x in x_list:
+        for x in self.x_list:
             dom = arcade.Sprite('resources/dom3.png', center_x=NACH_X + x, center_y=dom.height / 2)
             self.walls_list.append(dom)
             self.spec_object.append(dom)
 
-        self.create_walls(NACH_X - 2000, NACH_X + 20000, 128, 0, 1, 1, 'resources/grassmid.png')
+        self.create_walls(NACH_X - 2000, -64, RASST, 'resources/grassmid.png')
         self.fizika.add_sprite_list(self.walls_list, body_type=self.fizika.STATIC, friction=self.WALL_FRICTION,
                                     collision_type="wall")
         self.fizika.sprites[self.spec_object[2]].shape.friction = 1
@@ -139,6 +126,49 @@ class GlavaFirstView(views.play_views.LevelView):
         texture_list.load_textures(5, "resources/sposob", ".png", False)
         self.vibor_sposob = my_gui.ui.ViborSosob(self.igrok, 2, 5, texture_list, self.circles)
         self.vibor_sposob.enable()
+
+    def create_wave(self):
+        konec_x = NACH_X + self.x_list[0]
+        wave_slovar = {
+            aarons.G2: (1, konec_x - 1000, konec_x - 999, 160, True),
+            aarons.PMdd: (1, konec_x - 750, konec_x - 749, 160, True),
+            aarons.G1: (3, konec_x - 700, konec_x - 400, 160, True)
+        }
+        self.wave_slovar_list.append(wave_slovar)
+        konec_x = NACH_X + self.x_list[1]
+        wave_slovar = {
+            aarons.G2: (2, konec_x - 2000, konec_x - 1910, 160, True),
+            aarons.G1: (3, konec_x - 1750, konec_x - 1150, 160, True),
+            aarons.G3: (2, konec_x - 1200, konec_x - 1130, 160, True)
+        }
+        self.wave_slovar_list.append(wave_slovar)
+        konec_x = NACH_X + self.x_list[2]
+        wave_slovar = {
+            aarons.G2: (1, konec_x - 2600, konec_x - 2599, 160, True),
+            aarons.G3: (3, konec_x - 1800, konec_x - 1500, 160, True),
+            aarons.OpMdd1: (3, konec_x - 1900, konec_x - 1600, 160, True),
+        }
+        self.wave_slovar_list.append(wave_slovar)
+        konec_x = NACH_X + self.x_list[3]
+        wave_slovar = {
+            aarons.G2: (2, konec_x - 1500, konec_x - 1300, 160, True),
+            aarons.OpMdd2: (3, konec_x - 2100, konec_x - 1800, 160, True),
+            aarons.OpMdd1: (2, konec_x - 1200, konec_x - 800, 160, True),
+        }
+        self.wave_slovar_list.append(wave_slovar)
+        konec_x = NACH_X + self.x_list[4]
+        wave_slovar = {
+            aarons.OpRdd1: (2, konec_x - 1000, konec_x - 800, 160, True),
+            aarons.OpRdd2: (2, konec_x - 1400, konec_x - 1050, 160, True),
+            aarons.OpMdd1: (3, konec_x - 2400, konec_x - 2010, 160, True),
+        }
+        self.wave_slovar_list.append(wave_slovar)
+        konec_x = NACH_X + self.x_list[5]
+        wave_slovar = {
+            aarons.OpMdd2: (3, konec_x - 1900, konec_x - 1700, 160, True),
+            aarons.OpMdd1: (3, konec_x - 1100, konec_x - 800, 160, True),
+        }
+        self.wave_slovar_list.append(wave_slovar)
 
     def on_draw(self):
         self.clear()
@@ -202,7 +232,7 @@ class GlavaFirstView(views.play_views.LevelView):
 
         self.update_vrag_list()
         if not self.kast_scena:
-            self.update_move_igrok(NACH_X - 1340, 30000)
+            self.update_move_igrok(NACH_X - 1340, NACH_X + RASST)
 
         if self.s_kast_scena == 1:
             self.sinhelm.update()
@@ -217,13 +247,10 @@ class GlavaFirstView(views.play_views.LevelView):
             if self.vrag_napad.right < self.spec_object[1].left:
                 self.list_kast_scen[2] = True
         elif self.s_kast_scena == 4:
-            if self.igrok.left > self.spec_object[3].right and self.s_wave == 1:
+            i = self.ind_dom if self.ind_dom < len(self.spec_object) - 1 else len(self.spec_object) - 2
+            if self.igrok.left > self.spec_object[i].right and self.ind_dom < len(self.spec_object) - 1:
+                self.ind_dom += 1
                 self.waves(self.wave_slovar_list[self.s_wave])
-            elif self.igrok.left > self.spec_object[4].right and self.s_wave == 2:
-                self.waves(self.wave_slovar_list[self.s_wave])
-            # elif self.igrok.left > self.spec_object[4].right and self.s_wave == 3:
-            #     self.waves(self.wave_slovar_list[self.s_wave])
-
 
         if self.igrok.smert:
             self.window.close()
@@ -332,7 +359,7 @@ class GlavaFirstView(views.play_views.LevelView):
                 self.press_wad(symbol)
                 self.press_lshift(symbol)
 
-                if self.fight:
+                if self.fight and not self.igrok.toggle:
                     self.press_five_sposobs(symbol)
                     self.press_sposob(symbol, arcade.key.SPACE, self.igrok.udar.sposob)
                     self.press_sposob(symbol, arcade.key.SPACE, self.igrok.voda_udars.sposob)
@@ -576,12 +603,12 @@ class GlavaFirstView(views.play_views.LevelView):
                     if abs(self.igrok.center_x - self.vrag_napad.center_x) > 415:
                         self.fizika.apply_force(self.vrag_napad, (IGROK_MOVE_GROUND, 0))
                         self.igrok.action(self.igrok.techenie.sposob)
-                        self.igrok.techenie.hod(HOD_SPEED, self.walls_list)
+                        self.igrok.techenie.hod(HOD_SPEED, self.walls_list, 0)
                     else:
                         if abs(self.igrok.center_x - self.vrag_napad.center_x) > 400:
-                            self.igrok.techenie.hod(HOD_SPEED, self.walls_list)
+                            self.igrok.techenie.hod(HOD_SPEED, self.walls_list, 0)
                         else:
-                            self.igrok.techenie.hod(0, self.walls_list)
+                            self.igrok.techenie.hod(0, self.walls_list, self.igrok.storona)
                             self.vrag_napad.animations.ataka = True
                         self.fizika.set_friction(self.vrag_napad, 1)
                 else:
@@ -595,7 +622,6 @@ class GlavaFirstView(views.play_views.LevelView):
                     self.dialog.speakers_list.append(self.igrok)
                     self.dialog.speakers_list.append(self.sinhelm)
                     self.zoom_plus = self.kamera_dvizh = True
-
             else:
                 if abs(self.igrok.center_x - self.vrag_napad.center_x) > 170:
                     self.move_sprite(self.igrok, 1/60, (IGROK_MOVE_GROUND, 0), FRICTION_IGROK)
@@ -760,7 +786,7 @@ class GlavaFirstView(views.play_views.LevelView):
                 x2 = self.spec_object[2].center_x
                 if self.igrok.left > self.spec_object[2].right - 100:
                     if not self.igrok.techenie.action:
-                        self.igrok.techenie.hod(0, self.walls_list)
+                        self.igrok.techenie.hod(0, self.walls_list, self.igrok.storona)
                         self.igrok.techenie.action = False
                     self.s_ks += 1
                     if self.s_ks > 180:
@@ -811,7 +837,7 @@ class GlavaFirstView(views.play_views.LevelView):
                 elif self.igrok.center_x > x1 + (x2 - x1) / 2:
                     self.kamera_dvizh = True
                     self.igrok.techenie.action = True
-                    self.igrok.techenie.hod(HOD_SPEED, self.walls_list)
+                    self.igrok.techenie.hod(HOD_SPEED, self.walls_list, 0)
                     self.zoom_minus = False
                     if not self.zoom_plus:
                         if self.kamera.zoom > 1.3:
@@ -830,7 +856,7 @@ class GlavaFirstView(views.play_views.LevelView):
                         self.kamera_koef_y = 1.4
                 else:
                     self.igrok.techenie.action = True
-                    self.igrok.techenie.hod(HOD_SPEED, self.walls_list)
+                    self.igrok.techenie.hod(HOD_SPEED, self.walls_list, 0)
                     if self.kamera_koef_y < 8:
                         self.kamera_koef_y += 0.1
                     else:
@@ -880,7 +906,6 @@ class GlavaFirstView(views.play_views.LevelView):
 
     def waves(self, slovar: dict):
         self.s_wave += 1
-        print(self.s_wave)
         for key in slovar:
             self.wave(key, *slovar[key])
 

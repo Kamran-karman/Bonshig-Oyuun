@@ -5,6 +5,7 @@ import random
 
 import arcade
 import pymunk
+from PIL import Image
 
 import instruments
 import texts
@@ -29,6 +30,9 @@ CIRCLES_RADIUS = 50
 
 HOD_SPEED = 16
 
+MAX_KOL_VO = 127
+SIZE = 128
+MAX_RASST = MAX_KOL_VO * SIZE
 
 def sprite_list_on_draw(sprite_list: arcade.SpriteList):
     for sprite in sprite_list:
@@ -227,13 +231,36 @@ class LevelView(arcade.View):
                                        max_horizontal_velocity=300,
                                        moment_of_inertia=self.fizika.MOMENT_INF, damping=0.9, collision_type=self.VRAG_CT)
 
-    def create_walls(self, start_x: int, end_x: int, interval_x: int, start_y: int, end_y: int, interval_y: int,
+    def create_walls(self, left: int, bottom: int, rasst: int,
                      wall_texture: int or str | bytes | os.PathLike[str] | os.PathLike[bytes]):
-        for x in range(start_x, end_x, interval_x):
-            for y in range(start_y, end_y, interval_y):
-                wall = arcade.Sprite(wall_texture)
-                wall.position = x, y
-                self.walls_list.append(wall)
+        vsego = rasst / SIZE
+        it = int(vsego // MAX_KOL_VO) + 1
+        ostatok = rasst % MAX_KOL_VO
+
+        it_left = left
+        for i in range(it):
+            if i == it - 1:
+                self.__create_walls(it_left, bottom, ostatok, wall_texture)
+            else:
+                self.__create_walls(it_left, bottom, MAX_KOL_VO, wall_texture)
+                it_left += MAX_RASST
+
+    def __create_walls(self, left: int, bottom: int, kol_vo: int,
+                     wall_texture: int or str | bytes | os.PathLike[str] | os.PathLike[bytes]):
+        with Image.open(wall_texture) as img:
+            width, height = img.size
+            new_width = width * kol_vo
+            new_image = Image.new('RGBA', (new_width, height))
+
+            for i in range(kol_vo):
+                new_image.paste(img, (i * width, 0))
+
+            wall = arcade.Sprite()
+            texture = arcade.Texture(new_image)
+            wall.texture = texture
+            wall.left, wall.bottom = left, bottom
+
+            self.walls_list.append(wall)
 
     def update_igrok_pos(self, pos):
         self.igrok.position = pos
