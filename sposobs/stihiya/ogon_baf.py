@@ -12,8 +12,8 @@ from sposobs.stihiya import ogon
 
 
 class OgonBaf(ogon.Ogon):
-    def __init__(self, pers, sprite_list, baf_texture):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers, baf_texture):
+        super().__init__(pers)
         self.tip = sposobs.OGON_BAF
 
         self.__baf_texture = baf_texture
@@ -27,8 +27,8 @@ class OgonBaf(ogon.Ogon):
 
 
 class BafColdOr(OgonBaf):
-    def __init__(self, pers, sprite_list, baf_texture):
-        super().__init__(pers, sprite_list, baf_texture)
+    def __init__(self, pers, baf_texture):
+        super().__init__(pers, baf_texture)
         self.sposob = sposobs.OGON_BAF_COLD_ORUZHIE
 
 

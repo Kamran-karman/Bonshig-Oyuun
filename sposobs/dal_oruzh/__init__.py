@@ -12,8 +12,8 @@ import math
 
 
 class DalOruzh(sposobs.Fight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.klass = sposobs.DAL_ORUZH
 
         self.speed = 0
@@ -30,7 +30,7 @@ class DalOruzh(sposobs.Fight):
         self.radius = hit_box_and_radius.Radius(self)
 
     def ataka(self):
-        for sprite in self.sprite_list:
+        for sprite in self.pers.sprite_list:
             if (sprite.center_x > self.center_x or sprite.center_x < self.center_x) and self.radius.check_collision(sprite):
                 self.vidno = True
                 break
@@ -41,8 +41,8 @@ class DalOruzh(sposobs.Fight):
 
 
 class Ognestrel(DalOruzh):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.OGNESTREL
 
         self.radius.scale = 10
@@ -75,7 +75,7 @@ class Ognestrel(DalOruzh):
                         self.patrons -= 1
                         self.perezaryadka = False
                     self.pricel = False
-                    for sprite in self.sprite_list:
+                    for sprite in self.pers.sprite_list:
                         if arcade.check_for_collision(sprite, self) and not sprite.block.block:
                             self.udar(sprite)
                             self.s += self.timer_for_s
@@ -89,8 +89,8 @@ class Ognestrel(DalOruzh):
 
 
 class Pistolet(Ognestrel):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.PISTOLET
 
         self.uron = 1500

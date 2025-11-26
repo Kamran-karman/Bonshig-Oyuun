@@ -96,10 +96,9 @@ PISTOLET = 31001
 
 
 class Sposob(arcade.Sprite):
-    def __init__(self, pers, sprite_list: arcade.SpriteList):
+    def __init__(self, pers):
         super().__init__()
         self.pers = pers
-        self.sprite_list = sprite_list
 
         self.action = False
         self.action_2 = False
@@ -130,9 +129,9 @@ class Sposob(arcade.Sprite):
         #k_pk_t_pt_ns_ss 2112009 0x
 
     def update_sposob(self):
-        for sprite in self.sprite_list:
+        for sprite in self.pers.sprite_list:
             if sprite.hp <= 0:
-                self.sprite_list.remove(sprite)
+                self.pers.sprite_list.remove(sprite)
 
         if self.pers.hp <= 0 or self.pers.oglush:
             self.s += self.timer_for_s
@@ -147,8 +146,8 @@ class Sposob(arcade.Sprite):
 
 
 class Fight(Sposob):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.fight_sposob = True
 
         self.uron = 0
@@ -162,13 +161,13 @@ class Fight(Sposob):
         self.popal = False
 
     def update_slovar(self):
-        if len(self.slovar) < len(self.sprite_list):
-            for sprite in self.sprite_list:
+        if len(self.slovar) < len(self.pers.sprite_list):
+            for sprite in self.pers.sprite_list:
                 self.slovar.update({sprite: False})
-        while len(self.slovar) > len(self.sprite_list):
+        while len(self.slovar) > len(self.pers.sprite_list):
             for i in self.slovar:
                 s = 0
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if sprite == i:
                         s += 1
                 if s == 0:
@@ -287,8 +286,8 @@ class Fight(Sposob):
 
 
 class Block(Sposob):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.block_sposob = True
 
         self.block_texture = None

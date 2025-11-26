@@ -15,8 +15,8 @@ import math
 
 
 class VodaFightUdar(voda.VodaFight):
-    def __init__(self, pers, sprite_list, minus_v):
-        super().__init__(pers, sprite_list, minus_v)
+    def __init__(self, pers, minus_v):
+        super().__init__(pers, minus_v)
         self.sposob = sposobs.VODA_UDAR
         self.uron = voda_h.VFU_URON
         self.change = voda_h.VFU_CHANGE
@@ -50,15 +50,15 @@ class VodaFightUdar(voda.VodaFight):
         self.update_v()
         self.kd_timer_mana()
         self.radius.position = self.pers.position
-        if not self.radius.check_collision(sprite_list=self.sprite_list):
+        if not self.radius.check_collision(sprite_list=self.pers.sprite_list):
             self.v_nikuda = True
         else:
             s = 0
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if sprite.hp <= 0:
                     s += 1
 
-            if len(self.sprite_list) == s:
+            if len(self.pers.sprite_list) == s:
                 self.v_nikuda = True
 
         if self.action:
@@ -70,7 +70,7 @@ class VodaFightUdar(voda.VodaFight):
                     if self.change_y < 0:
                         self.change_y *= -1
                 else:
-                    for sprite in self.sprite_list:
+                    for sprite in self.pers.sprite_list:
                         if self.radius.check_collision(sprite) and sprite.hp > 0:
                             rast_x = abs(self.center_x - sprite.center_x)
                             rast_y = abs(self.center_y - sprite.center_y)
@@ -112,16 +112,17 @@ class VodaFightUdar(voda.VodaFight):
             if arcade.check_for_collision_with_list(self, self.pers.fizika.walls_list):
                 self.s += self.timer_for_s
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(sprite, self) and sprite.hp > 0:
                     self.s += self.timer_for_s
                     if self.udar_or_block(sprite):
                         self.oglush(sprite)
                         self.dvizh_sprite_func(sprite, physics_engine)
         else:
-            self.calc = self.v_nikuda = False
-            self.change_x = self.change_y = 0
-            self.slovar_rast.clear()
+            if self.calc or self.v_nikuda:
+                self.calc = self.v_nikuda = False
+                self.change_x = self.change_y = 0
+                self.slovar_rast.clear()
             self.update_position()
 
         self.update_slovar_dvizh()
@@ -130,16 +131,19 @@ class VodaFightUdar(voda.VodaFight):
 
 
 class VodaFightUdars(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, voda_h.VFUs_MINUS_V)
+    def __init__(self, pers):
+        super().__init__(pers, voda_h.VFUs_MINUS_V)
+        self.kol_vo = 0
         self.sposob = sposobs.VODA_UDARS
 
         self.timer_for_s_kd = voda_h.VFUs_TIMER_FOR_S_KD
 
         self.vu_list = arcade.SpriteList()
         for i in range(voda_h.VFUs_KOL_VO):
-            voda_udar = VodaFightUdar(self.pers, self.sprite_list, self.minus_v)
+            voda_udar = VodaFightUdar(self.pers, self.minus_v)
             self.vu_list.append(voda_udar)
+
+        self.polet = False
 
     def on_update(self, delta_time: float = 1 / 60, physics_engine: arcade.PymunkPhysicsEngine = None) -> None:
         if self.timer_for_s_kd >= self.s_kd > 0:
@@ -159,15 +163,20 @@ class VodaFightUdars(voda.VodaFight):
         else:
             self.kol_vo = 6
         # self.stihiya_kd_timer()
-
-        for vu in self.vu_list:
-            vu: VodaFightUdar
-            vu.on_update(physics_engine=physics_engine)
-            vu.update()
-            vu.dvizh_vel = self.dvizh_vel
-            vu.sprite_list = self.sprite_list
+        if self.polet:
+            s = 0
+            for vu in self.vu_list:
+                # vu: VodaFightUdar
+                vu.on_update(physics_engine=physics_engine)
+                vu.update()
+                if vu.action: s += 1
+                # vu.dvizh_vel = self.dvizh_vel
+                # vu.sprite_list = self.sprite_list
+            if s == 0:
+                self.polet = False
 
         if self.action:
+            if not self.polet: self.polet = True
             for vu in self.vu_list:
                 if not vu.action and not vu.kd:
                     vu.action = True
@@ -177,15 +186,15 @@ class VodaFightUdars(voda.VodaFight):
                     break
 
     def draw(self, *, filter=None, pixelated=None, blend_function=None) -> None:
-        for vu in self.vu_list:
-            if vu.action:
-                vu.draw()
+        if self.polet:
+            for vu in self.vu_list:
+                if vu.action: vu.draw()
 
 
 class Karakatica(voda.VodaImitation):
-    def __init__(self, pers, sprite_list, idle_udar_texture_list, idle_kombo_texture_list, obich_texture,
+    def __init__(self, pers, idle_udar_texture_list, idle_kombo_texture_list, obich_texture,
                  block_texture):
-        super().__init__(pers, sprite_list, 200)
+        super().__init__(pers, 200)
         self.sposob = sposobs.KARAKATICA
 
         self.uron = voda_h.KARA_URON
@@ -240,7 +249,7 @@ class Karakatica(voda.VodaImitation):
                 self.fizika.apply_force(self.pers, (-10000, 500))
 
         if self.action:
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite) and sprite.hp > 0:
                     self.atak(sprite, physics_engine)
 
@@ -282,8 +291,8 @@ class Karakatica(voda.VodaImitation):
 
 
 class Techenie(voda.VodoHod):
-    def __init__(self, pers, sprite_list, vel: int, igrok=False):
-        super().__init__(pers, sprite_list, igrok)
+    def __init__(self, pers, vel: int, igrok=False):
+        super().__init__(pers, igrok)
         self.minus_mana = voda_h.TECH_MINUS_MANA
         self.sposob = sposobs.TECHENIE
         self.uron = voda_h.TECH_URON
@@ -308,8 +317,8 @@ class Techenie(voda.VodoHod):
 
 
 class Reka(voda.VodoHod):
-    def __init__(self, pers, sprite_list, vel: int, igrok=False):
-        super().__init__(pers, sprite_list, igrok, voda_h.REKA_MINUS_V)
+    def __init__(self, pers, vel: int, igrok=False):
+        super().__init__(pers, igrok, voda_h.REKA_MINUS_V)
         self.sposob = sposobs.REKA
 
         self.minus_mana = voda_h.REKA_MINUS_MANA
@@ -335,8 +344,8 @@ class Reka(voda.VodoHod):
 
 
 class VodaShchit(voda.VodaBlock):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, voda_h.VSH_MINUS_V)
+    def __init__(self, pers):
+        super().__init__(pers, voda_h.VSH_MINUS_V)
         self.position = 100, 200
 
         self.minus_mana = voda_h.VSH_MINUS_MANA

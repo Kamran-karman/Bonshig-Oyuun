@@ -40,16 +40,16 @@ BAF_FOR_OGLUSH_UDAR_ZEVSA = 1.4788
 
 
 class Molniya(stihiya.StihiyaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.MOLNIAY
 
         self.timer_for_s = 3
 
 
 class CepnayaMolniay(Molniya):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.CEPNAYA_MOLNIYA
 
         self.uron = 300
@@ -81,7 +81,7 @@ class CepnayaMolniay(Molniya):
             spisok_rast = []
             spisok_xy = []
             spisok3 = []
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if self.radius.check_collision(sprite=sprite) and sprite.hp > 0:
                     poz_x, poz_y = abs(sprite.center_x - self.pers.center_x), \
                         abs(sprite.center_y - self.pers.center_y)
@@ -108,7 +108,7 @@ class CepnayaMolniay(Molniya):
                 en = spisok_rast.index(min(spisok_rast))
                 enx, eny = spisok_xy[en]
                 spisok3.append(spisok_xy[en])
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if sprite.position == (enx, eny):
                         self.udar(sprite)
                         self.oglush(sprite)
@@ -125,14 +125,14 @@ class CepnayaMolniay(Molniya):
                 w = 1
 
                 while w < 4:
-                    if radius.check_collision(sprite_list=self.sprite_list):
+                    if radius.check_collision(sprite_list=self.pers.sprite_list):
                         if self.pers.position == (stx, sty):
                             pred_poz = 0, 0
                         else:
                             pred_poz = stx, sty
                         spisok_rast = []
                         spisok_xy = []
-                        for sprite in self.sprite_list:
+                        for sprite in self.pers.sprite_list:
                             if radius.check_collision(sprite) and sprite.position != radius.position \
                                     and sprite.position != pred_poz and sprite.hp > 0:
                                 poz_x, poz_y = abs(radius.center_x - sprite.center_x), abs(
@@ -157,7 +157,7 @@ class CepnayaMolniay(Molniya):
                             en = spisok_rast.index(min(spisok_rast))
                             stx, sty = radius.position
                             enx, eny = spisok_xy[en]
-                            for sprite in self.sprite_list:
+                            for sprite in self.pers.sprite_list:
                                 if sprite.position == (enx, eny):
                                     self.udar(sprite)
                                     self.oglush(sprite)
@@ -179,7 +179,7 @@ class CepnayaMolniay(Molniya):
                                 stx, sty = radius.position
                                 enx, eny = spisok_xy[en]
                                 spisok3.append(spisok_xy[en])
-                                for sprite in self.sprite_list:
+                                for sprite in self.pers.sprite_list:
                                     if sprite.position == (enx, eny):
                                         self.udar(sprite)
                                         self.oglush(sprite)
@@ -201,8 +201,8 @@ class CepnayaMolniay(Molniya):
 
 
 class GnevTora(Molniya):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.GNEV_TORA
         self.uron = 400
 
@@ -228,7 +228,7 @@ class GnevTora(Molniya):
 
         self.kd_timer_stamina()
 
-        for sprite in self.sprite_list:
+        for sprite in self.pers.sprite_list:
             if self.radius.check_collision(sprite) and self.action and self.mana:
                 self.udar(sprite)
                 self.oglush(sprite)
@@ -240,8 +240,8 @@ class GnevTora(Molniya):
 
 
 class StreliPeruna(Molniya):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.STRELI_PERUNA
         self.uron = 150
 
@@ -262,11 +262,11 @@ class StreliPeruna(Molniya):
 
         self.kd_timer_stamina()
 
-        if self.action and self.radius.check_collision(sprite_list=self.sprite_list):
+        if self.action and self.radius.check_collision(sprite_list=self.pers.sprite_list):
             spis_pos = []
             spis1 = []
             spis_rast = []
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if self.radius.check_collision(sprite) and sprite.hp > 0:
                     spis_pos.append(sprite.position)
                     rx = abs(self.pers.center_x - sprite.center_x)
@@ -298,7 +298,7 @@ class StreliPeruna(Molniya):
                 enx, eny = min(spis_pos)
                 arcade.draw_line(stx, sty, enx, eny, (44, 117, 255, 255), 25)
                 arcade.draw_line(stx, sty, enx, eny, arcade.color.WHITE, 15)
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if sprite.position == (enx, eny) and self.action and self.mana:
                         self.udar(sprite)
                         self.oglush(sprite)
@@ -316,8 +316,8 @@ class StreliPeruna(Molniya):
 
 
 class SharMolniay(Molniya):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.SHAR_MOLNIYA
 
         self.uron = 35
@@ -388,7 +388,7 @@ class SharMolniay(Molniya):
             self.timer_for_s_oglush *= VZRIV_BAF_OGLUSH_SHAR_MOL
             self.oglush(self.pers)
             self.radius1.scale = self.scale * 2
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if self.radius1.check_collision(sprite) and sprite.hp > 0:
                     self.action = False
                     for i in self.slovar:
@@ -412,10 +412,10 @@ class SharMolniay(Molniya):
                 else:
                     self.change_x = -SKOROST_SHAR_MOL
 
-            if arcade.check_for_collision_with_list(self, self.sprite_list):
+            if arcade.check_for_collision_with_list(self, self.pers.sprite_list):
                 self.atak = True
                 self.radius1.scale = self.scale * 1.5
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.radius1.check_collision(sprite) and sprite.hp > 0:
                         self.action = False
                         for i in self.slovar:
@@ -430,7 +430,7 @@ class SharMolniay(Molniya):
                 self.atak = True
                 self.s_do_promah = 0
                 self.timer_for_s_oglush /= DEBAF_FOR_OGLUSH_SHAR_MOL
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.radius1.check_collision(sprite) and sprite.hp > 0:
                         for i in self.slovar:
                             if sprite == i and not self.slovar[i]:
@@ -464,7 +464,7 @@ class SharMolniay(Molniya):
                 self.s = 0
             spisok_rast = []
             spisok_xy = []
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if self.radius.check_collision(sprite) and sprite.position != self.radius.position and sprite.hp > 0:
                     rast = (abs(self.radius.center_x - sprite.center_x),
                             abs(self.radius.center_y - sprite.center_y))
@@ -490,7 +490,7 @@ class SharMolniay(Molniya):
                 enx, eny = spisok_xy[min_index]
                 arcade.draw_line(stx, sty, enx, eny, (44, 117, 255, 255), 25)
                 arcade.draw_line(stx, sty, enx, eny, arcade.color.WHITE, 15)
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if sprite.position == (enx, eny):
                         for i in self.slovar:
                             if sprite == i and not self.slovar[i]:
@@ -515,8 +515,8 @@ class SharMolniay(Molniya):
 
 
 class UdarZevsa(Molniya):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.UDAR_ZEVSA
         self.uron = 20
 
@@ -545,7 +545,7 @@ class UdarZevsa(Molniya):
         if self.action:
             self.s1 = 1
             if len(self.slovar_rast) == 0:
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.radius.check_collision(sprite) and sprite.hp > 0:
                         rast_x = abs(sprite.center_x - self.pers.center_x)
                         rast_y = abs(sprite.center_y - self.pers.center_y)

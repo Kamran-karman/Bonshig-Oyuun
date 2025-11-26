@@ -22,8 +22,8 @@ V_LIST = []
 '''list[str]'''
 
 class Voda(stihiya.Stihiya):
-    def __init__(self, pers, sprite_list, minus_v):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers, minus_v):
+        super().__init__(pers)
         self.voda = True
         self.podklass = sposobs.VODA
 
@@ -77,8 +77,8 @@ class Voda(stihiya.Stihiya):
 
 
 class VodaFight(Voda, stihiya.StihiyaFight, dvizh.DvizhSprite):
-    def __init__(self, pers, sprite_list, minus_v):
-        super().__init__(pers, sprite_list, minus_v)
+    def __init__(self, pers, minus_v):
+        super().__init__(pers, minus_v)
         self.tip = sposobs.VODA_FIGHT
 
         self.degree_block = 0.2
@@ -100,8 +100,8 @@ class VodaFight(Voda, stihiya.StihiyaFight, dvizh.DvizhSprite):
 
 
 class VodaBlock(Voda, stihiya.StihiyaBlock):
-    def __init__(self, pers, sprite_list, minus_v):
-        super().__init__(pers, sprite_list, minus_v)
+    def __init__(self, pers, minus_v):
+        super().__init__(pers, minus_v)
         self.tip = sposobs.VODA_BLOCK
 
         self.s_block_texture = 0
@@ -128,8 +128,8 @@ class VodaBlock(Voda, stihiya.StihiyaBlock):
 
 
 class VodaImitation(VodaFight, stihiya.StihiyaImitation):
-    def __init__(self, pers, sprite_list, minus_v):
-        super().__init__(pers, sprite_list, minus_v)
+    def __init__(self, pers, minus_v):
+        super().__init__(pers, minus_v)
         self.podtip = sposobs.VODA_IMITATION
 
         self.baff_uron = 3
@@ -178,8 +178,8 @@ class VodaImitation(VodaFight, stihiya.StihiyaImitation):
 
 
 class VodoHod(VodaFight):
-    def __init__(self, pers, sprite_list, minus_v, igrok=False):
-        super().__init__(pers, sprite_list, minus_v)
+    def __init__(self, pers, minus_v, igrok=False):
+        super().__init__(pers, minus_v)
         self.podtip = sposobs.VODOHOD
         self.igrok = igrok
 
@@ -282,7 +282,7 @@ class VodoHod(VodaFight):
             self.func_mana()
             self.v_max_minus = True
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite) and self.change_x != 0:
                     self.oglush(sprite)
                     self.dvizh_sprite_func(sprite, physics_engine, 1)

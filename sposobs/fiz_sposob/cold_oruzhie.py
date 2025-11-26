@@ -7,8 +7,8 @@ from sposobs.stihiya import ogon
 
 
 class ColdOruzhie(fiz_sposob.FizSposobFight):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.tip = sposobs.COLD_ORUZHIE
         self.radius = hit_box_and_radius.Radius(self, 0.2)
 
@@ -39,7 +39,7 @@ class ColdOruzhie(fiz_sposob.FizSposobFight):
                 self.s += self.timer_for_s
                 return
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     self.udar_or_block(sprite)
 
@@ -47,8 +47,8 @@ class ColdOruzhie(fiz_sposob.FizSposobFight):
 
 
 class MechOgon(ColdOruzhie, ogon.Ogon):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.klass = sposobs.FIZ_SPOSOB
         self.podklass = sposobs.FIZ_SPOSOB_FIGHT
         self.tip = sposobs.COLD_ORUZHIE
@@ -87,7 +87,7 @@ class MechOgon(ColdOruzhie, ogon.Ogon):
                 self.func_mana()
 
         if self.action:
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if ((not sprite.fight and arcade.check_for_collision(self, sprite)) or
                         (sprite.fight and arcade.check_for_collision(self, sprite.hit_box_2))):
                     self.pred_s_popal += 1
@@ -121,8 +121,8 @@ class MechOgon(ColdOruzhie, ogon.Ogon):
 
 
 class ObichMech(ColdOruzhie):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.sposob = sposobs.OBICH_MECH
         self.uron = 50
 
@@ -153,7 +153,7 @@ class ObichMech(ColdOruzhie):
             elif self.pers.storona == 1:
                 self.right, self.bottom = self.pers.center_x, self.pers.center_y - 40
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     self.udar_or_block(sprite)
 
@@ -164,8 +164,8 @@ class ObichMech(ColdOruzhie):
 
 
 class DvuruchMech(ColdOruzhie):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.tip = sposobs.DVURUCH_MECH
 
         self.uron = 120
@@ -206,7 +206,7 @@ class DvuruchMech(ColdOruzhie):
                     self.s_probit_block = 0
 
         if self.action:
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite) and not self.probit_block:
                     self.udar_or_block(sprite)
                 elif arcade.check_for_collision(self, sprite) and self.probit_block:
@@ -226,8 +226,8 @@ class DvuruchMech(ColdOruzhie):
 
 
 class Shchit(ColdOruzhie):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.sposob = sposobs.SHCHIT
         self.uron = 80
 
@@ -263,7 +263,7 @@ class Shchit(ColdOruzhie):
         if self.action:
             self.s += 1
             self.block = self.avto_block = False
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(sprite, self):
                     self.udar_or_block(sprite)
 
@@ -274,8 +274,8 @@ class Shchit(ColdOruzhie):
 
 
 class Vila(ColdOruzhie):
-    def __init__(self, pers, sprite_list, timer_for_s=50, timer_for_s_kd=20):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s=50, timer_for_s_kd=20):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.tip = sposobs.VILA
         self.uron = 40
 
@@ -308,7 +308,7 @@ class Vila(ColdOruzhie):
                 elif self.timer_for_s // 2 <= self.s < self.timer_for_s:
                     self.change_x = 3
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite) and self.s < 30:
                     self.udar_or_block(sprite)
 
@@ -326,8 +326,8 @@ class Vila(ColdOruzhie):
 
 
 class Topor(ColdOruzhie):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.tip = sposobs.TOPOR
         self.uron = 50
 
@@ -358,7 +358,7 @@ class Topor(ColdOruzhie):
                     self.change_angle = 12
             else:
                 self.change_angle = 0
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     self.udar_or_block(sprite)
         else:
@@ -372,8 +372,8 @@ class Topor(ColdOruzhie):
 
 # Молоток
 class Molotok(ColdOruzhie):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 23, 25)
+    def __init__(self, pers):
+        super().__init__(pers, 23, 25)
         self.sposob = sposobs.MOLOTOK
         self.uron = 20
         self.minus_stamina = 5
@@ -419,33 +419,33 @@ class Molotok(ColdOruzhie):
 
 # Ножи
 class Nozh(ColdOruzhie):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 10, 10)
+    def __init__(self, pers):
+        super().__init__(pers, 10, 10)
 
 # Лом
 class Lom(ColdOruzhie):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 10, 10)
+    def __init__(self, pers):
+        super().__init__(pers, 10, 10)
 
 # Лопата
 class Lopata(ColdOruzhie):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 10, 10)
+    def __init__(self, pers):
+        super().__init__(pers, 10, 10)
 
 # Кувалда
 class Kuvalda(ColdOruzhie):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 10, 10)
+    def __init__(self, pers):
+        super().__init__(pers, 10, 10)
 
 # Газовый ключ
 class GazKlyuch(ColdOruzhie):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 10, 10)
+    def __init__(self, pers):
+        super().__init__(pers, 10, 10)
 
 
 class MechBrenda(ColdOruzhie):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.tip = sposobs.MECH_BRENDA
         self.uron = 180
 
@@ -471,7 +471,7 @@ class MechBrenda(ColdOruzhie):
             self.s1 = 1
 
         if self.action:
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     self.udar_or_block(sprite)
 

@@ -13,8 +13,8 @@ import arcade
 
 
 class FizSposob(sposobs.Sposob):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.klass = sposobs.FIZ_SPOSOB
 
         self.minus_stamina = 0
@@ -47,8 +47,8 @@ class FizSposob(sposobs.Sposob):
 
 
 class FizSposobFight(sposobs.Fight, FizSposob, sposobs.Block):
-    def __init__(self, pers, sprite_list, timer_for_s, timer_for_s_kd):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers, timer_for_s, timer_for_s_kd):
+        super().__init__(pers)
         self.podklass = sposobs.FIZ_SPOSOB_FIGHT
 
         self.timer_for_s = timer_for_s
@@ -74,7 +74,7 @@ class FizSposobFight(sposobs.Fight, FizSposob, sposobs.Block):
     def otdacha(self, physics_engine: arcade.PymunkPhysicsEngine):
         if not self.rf:
             self.s_return_force = 0
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 for _sposob in sprite.sposob_list:
                     if _sposob.sposob == sposobs.VODA_UDARS:
                         for vu in _sposob.vu_list:
@@ -141,8 +141,8 @@ class FizSposobFight(sposobs.Fight, FizSposob, sposobs.Block):
 
 
 class Udar(FizSposobFight):
-    def __init__(self, pers, sprite_list, timer_for_s=45, timer_for_s_kd=105, master=False):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+    def __init__(self, pers, timer_for_s=45, timer_for_s_kd=105, master=False):
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.sposob = sposobs.UDAR
         self.master = master
 
@@ -181,7 +181,7 @@ class Udar(FizSposobFight):
         # if self.s == 1:
         #     self.func_stamina()
         if self.action:
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     if not self.probit_block:
                         self.udar_or_block(sprite)

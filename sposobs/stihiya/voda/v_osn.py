@@ -14,8 +14,8 @@ from interaction_sprites.battles import mobs
 
 
 class Volna(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, voda_h.VOLNA_MINUS_V)
+    def __init__(self, pers):
+        super().__init__(pers, voda_h.VOLNA_MINUS_V)
         self.uron = voda_h.VOLNA_URON
         self.minus_mana = voda_h.VOLNA_MINUS_MANA
         self.sposob = sposobs.VOLNA
@@ -65,7 +65,7 @@ class Volna(voda.VodaFight):
                     self.change_x = -voda_h.VOLNA_CHANGE_X
 
             if self.action_2:
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if arcade.check_for_collision(sprite, self) and sprite.hp > 0:
                         for i in self.slovar:
                             if i == sprite and not self.slovar[i]:
@@ -83,8 +83,8 @@ class Volna(voda.VodaFight):
 
 
 class BigVolna(Volna):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.uron = voda_h.BIG_VOLNA_URON
         self.minus_mana = voda_h.BIG_VOLNA_MINUS_MANA
         self.minus_v = voda_h.BIG_VOLNA_MINUS_V
@@ -113,8 +113,8 @@ class BigVolna(Volna):
 
 
 class RechnoyDrakon(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, voda_h.RD_MINUS_V)
+    def __init__(self, pers):
+        super().__init__(pers, voda_h.RD_MINUS_V)
         self.sposob = sposobs.RECHNOY_DRAKON
 
         self.osn = True
@@ -168,13 +168,13 @@ class RechnoyDrakon(voda.VodaFight):
                 self.s_zaderzh += 1
             else:
                 rast_list = []
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if sprite.hp > 0:
                         rast_list.append(abs(sprite.center_x - self.pers.center_x))
 
                 if len(rast_list) > 0:
                     min_rast = min(rast_list)
-                    for sprite in self.sprite_list:
+                    for sprite in self.pers.sprite_list:
                         if abs(sprite.center_x - self.pers.center_x) == min_rast:
                             self.vr_widht = min_rast
                             self.blizh_sprite = sprite
@@ -194,7 +194,7 @@ class RechnoyDrakon(voda.VodaFight):
                     self.right = self.pers.center_x
                 self.center_y = self.pers.top - self.pers.width * 0.3
 
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if arcade.check_for_collision(self, sprite):
                         if self.s1 == 0:
                             if self.udar_or_block(sprite, popal=False):
@@ -222,8 +222,8 @@ class RechnoyDrakon(voda.VodaFight):
 
 
 class UdarKita(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, voda_h.UK_MINUS_V)
+    def __init__(self, pers):
+        super().__init__(pers, voda_h.UK_MINUS_V)
         self.sposob = sposobs.UDAR_KITA
 
         self.osn = True
@@ -272,7 +272,7 @@ class UdarKita(voda.VodaFight):
                 else:
                     self.right = self.pers.center_x + 32
 
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if arcade.check_for_collision(sprite, self) and sprite.hp > 0:
                         self.udar(sprite)
                         self.oglush(sprite)
@@ -290,8 +290,8 @@ class UdarKita(voda.VodaFight):
 
 
 class Tayfun(voda.VodaFight, dvizh.DvizhPersAndSprite):
-    def __init__(self, pers, sprite_list, igrok):
-        super().__init__(pers, sprite_list, voda_h.TAYF_MINUS_V)
+    def __init__(self, pers, igrok):
+        super().__init__(pers, voda_h.TAYF_MINUS_V)
         self.sposob = sposobs.TAYFUN
 
         self.osn = True
@@ -333,7 +333,7 @@ class Tayfun(voda.VodaFight, dvizh.DvizhPersAndSprite):
 
         if self.action:
             self.scale_xy = (self.scale_xy[0] + 0.2, self.scale_xy[1] + 0.3)
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     self.udar(sprite)
                     self.dvizh_sprite_func(sprite, physics_engine)
@@ -349,8 +349,8 @@ class Tayfun(voda.VodaFight, dvizh.DvizhPersAndSprite):
 
 
 class Hlist(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, voda_h.HLIST_MINUS_V)
+    def __init__(self, pers):
+        super().__init__(pers, voda_h.HLIST_MINUS_V)
         self.sposob = sposobs.HLIST
 
         self.osn = True
@@ -413,7 +413,7 @@ class Hlist(voda.VodaFight):
 
                 self.scale_xy = (self.scale_xy[0], self.scale_xy[1] + 1.25)
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite) and sprite.hp > 0:
                     self.s += self.timer_for_s
                     if self.udar_or_block(sprite):
@@ -429,8 +429,8 @@ class Hlist(voda.VodaFight):
 
 
 class Lezviya(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 0)
+    def __init__(self, pers):
+        super().__init__(pers, 0)
         self.sposob = sposobs.LEZVIYA
 
         self.osn = True
@@ -468,7 +468,7 @@ class Lezviya(voda.VodaFight):
         if self.action:
 
             self.change_x = 0.1 * self.storona
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if self.animations.slovar_animation[ACTION][0] == 0:
                     self.slovar[sprite] = False
                 if arcade.check_for_collision(self, sprite) and sprite.hp > 0 and self.udar_or_block(sprite):
@@ -487,8 +487,8 @@ class Lezviya(voda.VodaFight):
 
 
 class Briz(voda.VodaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 300)
+    def __init__(self, pers):
+        super().__init__(pers, 300)
         self.sposob = sposobs.BRIZ
 
         self.osn = True
@@ -533,16 +533,16 @@ class Briz(voda.VodaFight):
         self.update_mor()
         self.kd_timer_mana()
         self.radius.position = self.pers.position
-        if not self.radius.check_collision(sprite_list=self.sprite_list):
+        if not self.radius.check_collision(sprite_list=self.pers.sprite_list):
             self.v_nikuda = True
         else:
             self.v_nikuda = False
             s = 0
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if sprite.hp <= 0:
                     s += 1
 
-            if len(self.sprite_list) == s:
+            if len(self.pers.sprite_list) == s:
                 self.v_nikuda = True
 
         if self.action:
@@ -551,7 +551,7 @@ class Briz(voda.VodaFight):
                 if not self.v_nikuda:
                     if self.calc:
                         self.calc = False
-                        for sprite in self.sprite_list:
+                        for sprite in self.pers.sprite_list:
                             if self.radius.check_collision(sprite) and sprite.hp > 0:
                                 rast_x = abs(self.center_x - sprite.center_x)
                                 rast_y = abs(self.center_y - sprite.center_y)
@@ -573,7 +573,7 @@ class Briz(voda.VodaFight):
                 else:
                     self.update_storona(self.pers, 1)
                     self.change_x = self.change * self.storona
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if arcade.check_for_collision(self, sprite) and sprite.hp > 0:
                         self.s = self.timer_for_s / 2
                         self.change_x *= -1
@@ -640,8 +640,8 @@ class Briz(voda.VodaFight):
 
 
 class Priliv(voda.VodaFight, dvizh.DvizhPersAndSprite):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, 200)
+    def __init__(self, pers):
+        super().__init__(pers, 200)
         self.sposob = sposobs.PRILIV
         self.osn = True
 
@@ -678,7 +678,7 @@ class Priliv(voda.VodaFight, dvizh.DvizhPersAndSprite):
         if self.action:
             self.pers.oglush_for_sposob = True
             physics_engine.set_friction(self.pers, 0)
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(sprite, self):
                     self.timer_for_s_dvizh_sprite = self.timer_for_s_oglush = self.timer_for_s - self.s + 30
                     self.udar(sprite)
@@ -699,8 +699,8 @@ class Priliv(voda.VodaFight, dvizh.DvizhPersAndSprite):
 
 
 class VodMarionetki(voda.Voda):
-    def __init__(self, pers, sprite_list, walls_list):
-        super().__init__(pers, sprite_list, 80)
+    def __init__(self, pers, walls_list):
+        super().__init__(pers, 80)
         self.__walls_list = walls_list
         self.__mari_list = arcade.SpriteList()
         self.__x_list = [300, 250, -300]
@@ -745,25 +745,25 @@ class VodMarionetki(voda.Voda):
 
     def __create(self, physics_engine: arcade.PymunkPhysicsEngine):
         def create_sposob(mari):
-            hlist = Hlist(mari, self.sprite_list)
+            hlist = Hlist(mari)
             mari.sposob_list.append(hlist)
-            rech_drakon = RechnoyDrakon(mari, self.sprite_list)
+            rech_drakon = RechnoyDrakon(mari)
             mari.sposob_list.append(rech_drakon)
-            volna = Volna(mari, self.sprite_list)
+            volna = Volna(mari)
             mari.sposob_list.append(volna)
-            tayfun = Tayfun(mari, self.sprite_list, True)
+            tayfun = Tayfun(mari, True)
             mari.sposob_list.append(tayfun)
-            udar_kita = UdarKita(mari, self.sprite_list)
+            udar_kita = UdarKita(mari)
             mari.sposob_list.append(udar_kita)
-            lezviya = Lezviya(mari, self.sprite_list)
+            lezviya = Lezviya(mari)
             mari.sposob_list.append(lezviya)
-            big_volna = BigVolna(mari, self.sprite_list)
+            big_volna = BigVolna(mari)
             mari.sposob_list.append(big_volna)
-            briz = Briz(mari, self.sprite_list)
+            briz = Briz(mari)
             mari.sposob_list.append(briz)
-            priliv = Priliv(mari, self.sprite_list)
+            priliv = Priliv(mari)
             mari.sposob_list.append(priliv)
-            voda_udars = v_dop.VodaFightUdars(mari, self.sprite_list)
+            voda_udars = v_dop.VodaFightUdars(mari)
             mari.sposob_list.append(voda_udars)
             for sposob in mari.sposob_list:
                 sposob.uron /= 1.5
@@ -772,7 +772,7 @@ class VodMarionetki(voda.Voda):
                 sposob.scale /= 1.5
 
         for x in self.__x_list:
-            mari = mobs.Marionetka(f"Marionetka {x}", self.sprite_list, self.__walls_list, self.pers)
+            mari = mobs.Marionetka(f"Marionetka {x}", self.pers.sprite_list, self.__walls_list, self.pers)
             mari.position = self.pers.center_x + x, self.pers.center_y
             voda.V_LIST.append(mari)
             create_sposob(mari)

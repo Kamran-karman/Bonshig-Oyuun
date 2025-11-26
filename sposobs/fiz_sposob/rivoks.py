@@ -10,8 +10,8 @@ from sposobs import fiz_sposob, dvizh
 
 
 class Rivoks(dvizh.DvizhPers):
-    def __init__(self, pers, sprite_list, timer_for_s_dvizh=0, vel=(0, 0), igrok=False):
-        super().__init__(pers, sprite_list, vel, timer_for_s_dvizh, igrok)
+    def __init__(self, pers, timer_for_s_dvizh=0, vel=(0, 0), igrok=False):
+        super().__init__(pers, vel, timer_for_s_dvizh, igrok)
         self.klass = sposobs.RIVOKS
 
         self.radius_stop = hit_box_and_radius.KvadratRadius()
@@ -74,9 +74,9 @@ class Rivoks(dvizh.DvizhPers):
 
 
 class Rivok(fiz_sposob.FizSposobFight, Rivoks):
-    def __init__(self, pers, sprite_list, vel, timer_for_s=30, timer_for_s_kd=60, timer_for_s_dvizh=60,
+    def __init__(self, pers, vel, timer_for_s=30, timer_for_s_kd=60, timer_for_s_dvizh=60,
                  igrok=False):
-        super().__init__(pers, sprite_list, timer_for_s, timer_for_s_kd)
+        super().__init__(pers, timer_for_s, timer_for_s_kd)
         self.dvizh_vel = vel
         self.igrok = igrok
         self.sposob = sposobs.RIVOK

@@ -11,8 +11,8 @@ from sposobs.dvizh import DvizhPers
 
 
 class Ogon(stihiya.StihiyaFight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.podklass = sposobs.OGON
         self.ogon = True
 
@@ -32,7 +32,7 @@ class Ogon(stihiya.StihiyaFight):
             sprite.tik_slovar.update({self.sposob: [True, 0]})
 
     def update_tik(self):
-        for sprite in self.sprite_list:
+        for sprite in self.pers.pers.sprite_list:
             for sposob in sprite.tik_slovar:
                 if sposob == self.sposob and sprite.tik_slovar[sposob][0]:
                     sprite.tik_slovar[sposob][1] += 1
@@ -61,8 +61,8 @@ class Ogon(stihiya.StihiyaFight):
 
 
 class FireBall(Ogon):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.STIHIYA_KAST
         self.sposob = sposobs.FIRE_BALL
 
@@ -125,7 +125,7 @@ class FireBall(Ogon):
 
                 self.change_x = self.change * self.storona
 
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.check_voda_colision(sprite):
                         break
 
@@ -153,8 +153,8 @@ class FireBall(Ogon):
 
 
 class MiniFireBall(Ogon):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.STIHIYA_KAST
         self.sposob = sposobs.MINI_FIRE_BALL
 
@@ -207,7 +207,7 @@ class MiniFireBall(Ogon):
                 #self.pers.stan_for_sposob = False
                 self.change_x = self.change * self.storona
 
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.check_voda_colision(sprite):
                         break
 
@@ -236,8 +236,8 @@ class MiniFireBall(Ogon):
 
 
 class YazikiOgnya(Ogon):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.YAZIKI_OGNYA
 
         self.uron = 35
@@ -257,7 +257,7 @@ class YazikiOgnya(Ogon):
         self.stopp = False
 
     def update_potok(self):
-        for sprite in self.sprite_list:
+        for sprite in self.pers.sprite_list:
             if arcade.check_for_collision(sprite.block, self) and (sprite.block.block or sprite.block.avto_block):
                 self.stopp = True
                 if self.center_x <= sprite.center_x:
@@ -304,7 +304,7 @@ class YazikiOgnya(Ogon):
             #     self.right = self.pers.center_x
             # self.center_y = self.pers.center_y
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if ((((not sprite.fight and arcade.check_for_collision(self, sprite))
                           or (sprite.fight and arcade.check_for_collision(self, sprite.hit_box_2)))
                             or (sprite.block.block or sprite.block.avto_block)
@@ -325,8 +325,8 @@ class YazikiOgnya(Ogon):
 
 
 class KulakOgnya(Ogon):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.STIHIYA_KAST
         self.sposob = sposobs.KULAK_OGNYA
         self.uron = 40
@@ -371,7 +371,7 @@ class KulakOgnya(Ogon):
                 self.kast = False
                 self.change_x = self.change * self.storona
 
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.check_voda_colision(sprite):
                         break
 
@@ -395,8 +395,8 @@ class KulakOgnya(Ogon):
 
 
 class OgnenSnaryad(Ogon):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.STIHIYA_KAST
         self.sposob = sposobs.OGNEN_SNARYAD
 
@@ -441,7 +441,7 @@ class OgnenSnaryad(Ogon):
                 self.kast = False
                 self.change_x = self.change * self.storona
 
-                for sprite in self.sprite_list:
+                for sprite in self.pers.sprite_list:
                     if self.check_voda_colision(sprite):
                         break
 
@@ -469,8 +469,8 @@ class OgnenSnaryad(Ogon):
 
 
 class Polet(Ogon, DvizhPers):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.sposob = sposobs.POLET
 
         self.minus_mana = 7

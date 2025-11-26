@@ -10,14 +10,14 @@ from sposobs import stihiya, dvizh
 
 
 class Veter(stihiya.StihiyaFight, dvizh.DvizhSprite):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.tip = sposobs.VETER
 
 
 class Poriv(Veter):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.uron = 100
         self.minus_mana = 10
         self.change = 15
@@ -49,7 +49,7 @@ class Poriv(Veter):
                 else:
                     self.change_x = -self.change
 
-            for sprite in self.sprite_list:
+            for sprite in self.pers.sprite_list:
                 if arcade.check_for_collision(self, sprite):
                     self.udar(sprite)
                     self.dvizh_sprite_func(sprite)

@@ -7,8 +7,8 @@ from sposobs.fiz_sposob import cold_oruzhie
 from sposobs.stihiya import ogon_baf
 
 class OgonMolotok(ogon_baf.BafColdOr, cold_oruzhie.Molotok):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list, arcade.load_texture_pair("resources/Sposob_animations/molotok_ogon_baf.png"))
+    def __init__(self, pers):
+        super().__init__(pers, arcade.load_texture_pair("resources/Sposob_animations/molotok_ogon_baf.png"))
         self.klass = sposobs.FIZ_SPOSOB
         self.podklass = sposobs.FIZ_SPOSOB_FIGHT
         self.tip = sposobs.COLD_ORUZHIE

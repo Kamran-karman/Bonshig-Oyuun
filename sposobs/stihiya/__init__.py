@@ -10,8 +10,8 @@ import arcade
 
 
 class Stihiya(sposobs.Sposob):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.klass = sposobs.STIHIYA
 
         self.minus_mana = 0
@@ -46,8 +46,8 @@ class Stihiya(sposobs.Sposob):
 
 
 class StihiyaFight(Stihiya, sposobs.Fight):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.radius = hit_box_and_radius.Radius(self.pers)
 
     def update_mor(self):
@@ -56,8 +56,8 @@ class StihiyaFight(Stihiya, sposobs.Fight):
 
 
 class StihiyaBlock(Stihiya, sposobs.Block):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.timer_for_s_block = 60
         self.s_block = self.timer_for_s_block
 
@@ -87,8 +87,8 @@ class StihiyaBlock(Stihiya, sposobs.Block):
 
 
 class StihiyaImitation(StihiyaBlock):
-    def __init__(self, pers, sprite_list):
-        super().__init__(pers, sprite_list)
+    def __init__(self, pers):
+        super().__init__(pers)
         self.podklass = sposobs.STIHIYA_IMITATION
 
         self.s_add = 0
