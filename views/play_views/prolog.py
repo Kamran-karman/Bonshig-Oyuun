@@ -301,8 +301,8 @@ class PrologViev(views.play_views.LevelView):
         self.sinhelm.position = (1500, 158) if (2 >= self.s_kast_scena or self.s_kast_scena == 6) \
             else self.position_slovar[self.sinhelm.name]
 
-        self.create_walls(CENTER_X_ROCK + 150, 17000, 128, 0, 1, 1, 'resources/waterTop_low.png')
-        self.create_walls(-1000, CENTER_X_ROCK + 150, 128, -128, 1, 128, 'resources/grassmid.png')
+        self.create_walls(-1000, -64, CENTER_X_ROCK + 1150, 'resources/grassmid.png')
+        #self.create_walls(CENTER_X_ROCK + 150, -64, 3000, 'resources/waterTop_low.png')
 
         self.update_igrok_pos(self.position_slovar[self.igrok.name])
         self.igrok.fight = False
@@ -384,8 +384,6 @@ class PrologViev(views.play_views.LevelView):
         self.center_kamera_za_igrok()
         if self.new_game:
             self.kamera_dvizh = False
-
-        print(self.igrok.scale, self.bratislav.scale)
 
     def reset(self):
         pass
